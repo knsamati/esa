@@ -1,0 +1,78 @@
+project:
+  type: book
+  output-dir: docs
+
+book:
+  title: "Pratique d'Analyse sectorielle de l'éducation avec R "
+  subtitle: "Application avec les données d'enquêtes menages MICS"  
+  author: "Komlan Nouwokpo Samati"
+  date: today
+  language: fr
+  output-file: analyse_education
+  downloads: [pdf]
+  repo-actions: [edit]
+  search: true
+  reader-mode: true
+  sidebar:
+    style: "docked"
+    collapse-level: 2
+  chapters:
+    - index.qmd
+    - intro.qmd
+    - preparation.qmd
+    - part: scolarisation.qmd
+      chapters:
+       - capacite.qmd
+       - demande_offre.qmd
+       - efficacite_interne.qmd
+       - references.qmd
+    - part: depense.qmd
+      chapters:
+       - depense_menage.qmd
+    - part: qualite.qmd
+      chapters:
+       - analyse_qualite.qmd
+    - part: efficacite_externe.qmd
+      chapters:
+       - efficacite_externe_systeme.qmd
+
+    - part: equite.qmd
+      chapters:
+       - equite_systeme.qmd
+
+bibliography: references.bib
+
+format:
+  bookup-html:
+    css: css/book.css
+    dev: png
+    default-image-extension: svg
+    smooth-scroll: false
+    toc: true
+    toc-title: "Sur cette page"
+    lib-dir: lib
+    include-after-body:
+      text: |
+        <script src="js/book.js"></script>
+  pdf:
+    documentclass: scrbook
+    classoption: frenchb
+    template: eisvogel.latex
+    include-in-header: latex/preamble.tex
+    include-before-body: latex/before_body.tex
+    default-image-extension: pdf
+    prefer-html: false
+    filters:
+      - latex-environment
+    environments:
+      rmdimportant: rmdimportant
+      rmdnote: rmdnote
+      solution-exo: solutionexo
+    urlcolor: blue
+    linkcolor: red
+    geometry:
+      - a4paper
+      - top=30mm
+      - left=20mm
+      - right=20mm
+      - bottom=30mm

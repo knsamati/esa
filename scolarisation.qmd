@@ -1,0 +1,16 @@
+# Analyse de la scolarisation, de l'efficacité interne et des enfants hors du système scolaraire {.unnumbered}
+
+{{< include _setup.qmd >}}
+
+Le présent chapitre est consacrée à l'analyse de la scolarisation à travers les chapitres suivants:
+
+- L'analyse de la capacité d'accueil du système : Taux brut et net de scolarisation;
+- L'analyse de la couverture scolaire avec l'élaboration du profil de scolarité;
+- L'analyse des questions d'offres et de la demande scolaire;
+- L'analyse de l'efficacité interne du système à travers les flux d'élèves (le redoublement, la promotion et l'abandon);
+- L'analyse des enfants hors du système scolaire (Out of scholl children, OOSC)
+
+
+
+
+

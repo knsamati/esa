@@ -1,0 +1,66 @@
+\usepackage{ctable}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage{comment}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage[table]{xcolor}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage[normalem]{ulem}
+\PassOptionsToPackage{x11names}{xcolor} 
+\floatplacement{figure}{H}
+
+%\usepackage[sf,bf]{titlesec}
+
+%\renewcommand{\chaptername}{Chapitre}
+%\renewcommand{\contentsname}{Table des Matières}
+%\renewcommand{\partname}{Partie}
+
+\usepackage{framed,color}
+\definecolor{incolor}{RGB}{240,240,240}
+\definecolor{outcolor}{RGB}{248,248,248}
+
+\renewcommand{\textfraction}{0.05}
+\renewcommand{\topfraction}{0.8}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\floatpagefraction}{0.75}
+
+\makeatletter
+\newenvironment{kframe}{%
+  \medskip{}
+  \setlength{\fboxsep}{.8em}
+  \def\at@end@of@kframe{}%
+  \ifinner\ifhmode%
+      \def\at@end@of@kframe{\end{minipage}}%
+      \begin{minipage}{\columnwidth}%
+    \fi\fi%
+  \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+    \colorbox{incolor}{##1}\hskip-\fboxsep
+    % There is no \\@totalrightmargin, so:
+    \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+  \MakeFramed {\advance\hsize-\width
+    \@totalleftmargin\z@ \linewidth\hsize
+    \@setminipage}}%
+{\par\unskip\endMakeFramed%
+  \at@end@of@kframe}
+\makeatother
+
+\let\oldverbatim\verbatim
+\renewenvironment{Shaded}{\vspace{0.2cm}\begin{kframe}}{\end{kframe}}
+\renewenvironment{verbatim}{\begin{shaded}\begin{oldverbatim}}{\end{oldverbatim}\end{shaded}}
+
+% Hide solution-exo environments
+\excludecomment{solutionexo}
+
+
+\urlstyle{tt}
+
+\frontmatter

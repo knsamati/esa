@@ -1,0 +1,60 @@
+```{r}
+#| label: setup
+#| include: false
+#| cache: false
+
+library(knitr)
+library(tidyverse)
+
+knitr::opts_chunk$set(
+    cache = TRUE,
+    echo = TRUE,
+    comment = "#>",
+    collapse = TRUE
+)
+
+options(max.print = 1000)
+options(scipen = 1000)
+
+
+library(tidyverse)  # Pour la manipulation des données
+library(haven)      # pour l'importation des données du format SPSS dans R
+library(labelled)   # Pour les labelles des variables
+library(expss)      # Pour le formatage des tableaux dans R
+library(xlsx)       # pour exporter les données dans Excel
+library(naniar)     # pour remplacer les données vides avec la fonction replace_with_na 
+library(here)       # Pour le chemin des données
+library(survey)     # Pour la manipulation des données
+library(srvyr)      # pour la manipulation des données pondérées avec le style dplyr
+library(rio)        # Pour l'importation des données
+library(gtsummary)
+library(gt)
+library(glue)
+library(janitor)
+
+hl <- import(here("data/mics/hl.sav")) |> as_tibble() # Importation de la base hl
+wm <- import(here("data/mics/wm.sav")) |> as_tibble() # Importation de la base wm
+mn <- import(here("data/mics/mn.sav")) |> as_tibble() # Importation de la base mn
+fs <- import(here("data/mics/fs.sav")) |> as_tibble() # Importation de la base fs
+ch <- import(here("data/mics/ch.sav")) |> as_tibble() # Importation de la base ch
+
+hl <- hl |> 
+  mutate(
+    age_school = case_when(
+    schage>= 6 & schage <= 11 ~  1,
+    schage>= 12 & schage <= 15 ~ 2,
+    schage>= 16 & schage <= 18 ~ 3,
+    .default = NA
+  ))
+
+val_labels(hl$age_school) <- c("Primaire" = 1, "Secondaire 1" = 2,"Secondaire 2" = 3)
+taux <- function(numerateur,denominateur){
+    survey_total({{numerateur}},rm = TRUE)/survey_total({{denominateur}},na.rm = TRUE)}
+val_labels(hl$HH6) <- c(Urbian = 1, Rural = 2)
+val_labels(hl$HH7) <- c("Maritime" = 1, "Plateaux" = 2,"Centrale" = 3, "Kara" = 4,"Savanes" = 5, "Lomé Commune" = 6, "Golfe Urbain" = 7)
+val_labels(hl$HL4) <- c(Masculin = 1, Feminin = 2)
+val_labels(hl$windex5) <- c("Les plus pauvres" = 1, "Second" = 2, "Moyen" = 3, "Quatrième" = 4,"Les plus riches" = 5)
+
+```
+
+

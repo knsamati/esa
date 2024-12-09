@@ -1,0 +1,36 @@
+
+[![Un éléphant](cover.png)]{width=60%}(Un éléphant)
+
+# Preface {.unnumbered}
+
+Les enquêtes ménages constituent souvent une source de données sous-exploitée pour l'analyse sectorielle de l'éducation dans la plupart des pays africains. Les instituts nationaux des statistiques (INS) produisent régulièrement des enquêtes ménages sur des thématiques divers (dépenses des ménages, la santé et la malnutrition, etc.). La plupart de ces enquêtes disposent un volet éducation des ménages qui n'est souvent pas exploité ou très peu. Les documents d'analyse produits par les INS abordent superficiellement les différents secteurs socio-économiques. L'analyse de l'éducation se résume à la production des taux de fréquentation, de scolarisation et d'alphabétisation. 
+
+Certains de données sont souvent utilisées lors de l'élaboration des documents d'analyse sectorielle de l'éducation en complément des données du recensement scolaire (SIGE[^1]), sur une période de cinq ans dans la plupart des pays (les enquêtes les plus utilisées sont MICS[^2] et EDS[^3]). La production et l'analyse sont menées par les experts d'appui à une équipe technique. C'est la seule fois que les données d'enquêtes ménages sont utilisées pour l'analyse sectorielle de l'éducation. Entre les cinq années d'élaboration de l'analyse sectorielle, d'autres enquêtes sont menées et pour servir de diagnostic intermédiaire.
+
+Ce document aborde l'utilisation du logiciel statistique R pour l'analyse sectorielle de l'éducation à partir des enquêtes ménages. Il n'aborde pas l’interprétation des résultats mais la méthodologie de calcul des différents indicateurs et la mise en oeuvre à parti de R.Il aborde les différents sous-secteur de l'éducation (la scolarisation, la qualité, les dépenses des ménages, etc.)
+
+Pour élaborer ce document, nous avons utilisé plusieurs ressources.
+Pour l'éducation, nous avons utilisé principalement les documents suivants:
+
+- Les différents ***guides méthodologiques pour l'analyse sectorielle de l'éducation*** de l'UNESCO;
+- ***Guide pour l’analyse des données statistiques des enquêtes en grappes à indicateurs multiples (MICS6), avec un accent particulier sur la réalisation des objectifs de développement durable*** de l'UNICEF;
+- ***R code to produce Demographic and Health Survey Indicators*** de DHS programme.
+
+Pour R nous avons utiliser les documents suivants:
+
+- ***Guide pour l’analyse de données d’enquêtes avec R*** de Joseph Larmarange;
+- ***Introduction à R et au tidyverse*** Julien Barnier;
+
+Toutes ces ressources ont été d'une grande utilité pour la rédaction du présent documents.
+
+Toute notre gratuite à toutes ces personnes qui ont cru en nous. Qu'ils en soit remercier.
+
+Ce document constitue une première version sur les enquêtes ménages. Une deuxième version portera sur l'utilisation des données de recensement scolaire, SIGE pour élaborer l'analyse sectorielle de l'éducation.
+
+
+[^1]: SIGE: *Système d'information et de gestion de l'éducation (EMIS en anglais)*;
+[^2]: MICS: *Multiple indicators census survey* <https://mics.unicef.org/>;
+[^3]: EDS: *Enquête démographique et de santé (DHS en anglais)* <https://dhsprogram.com/>.
+
+
+

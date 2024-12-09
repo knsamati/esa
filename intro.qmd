@@ -1,0 +1,41 @@
+# Introduction {.unnumbered}
+
+## Pourquoi utiliser les enquêtes menages dans l'analyse sectorielle de l'éducation
+
+Le suivi et l’évaluation des objectifs éducatifs nécessitent d’avoir à disposition des indicateurs fiables et des outils de suivi adéquats. Le calcul des indicateurs (taux brut de scolarisation, taux d’accès et d’achèvement…) à chacun des niveaux d’enseignement d’un système éducatif répond ainsi à deux exigences. La première est de pouvoir situer le pays par rapport aux résultats quantitatifs et qualitatifs de son système d’éducation et de formation (en matière de scolarisation offerte à l’ensemble de la population, filles/garçons, urbains/ruraux, riches/pauvres, région…). La seconde est d’arriver, sur la base de ces résultats, à une planification sur le court et moyen terme avec des stratégies adéquates pour atteindre les objectifs que se fixe le pays. Une mauvaise estimation des indicateurs de scolarisation ne peut de ce fait que conduire à une mauvaise estimation des besoins, et donc à une évaluation erronée du besoin de financement pour atteindre les objectifs fixés. Pour ce faire, les indicateurs sur lesquels se base la description du système doivent être autant que possible fiables et proches de la réalité qu’ils décrivent.
+
+Deux sources de données peuvent être mobilisées pour le calcul de ces indicateurs, il s’agit :
+
+i)  des données administratives des services statistiques des différents ministères en charge de l’éducation ;
+ii) des données issues d’enquêtes ménages réalisées à l’échelle du pays sur un échantillon représentatif des ménages.
+
+L’utilisation des statistiques administratives nécessite des données démographiques fiables sur le nombre d’enfants à scolariser à chaque niveau d’enseignement, au niveau national et au niveau désagrégé le plus fin possible (genre, zone, régions, préfectures, sous-préfectures, communes, etc.). Une imprécision des données de population (projections de population faites sur un recensement ancien, ou sur des données de recensement qui n’ont pas été suffisamment corrigées des erreurs de déclaration sur les âges) a ainsi des conséquences directes sur les indicateurs de couverture scolaire. En effet, une surestimation des données de population entraîne une sous estimation des indicateurs de couverture (taux brut de scolarisation, taux d’accès, taux d’achèvement) du système et vice versa.
+
+Dans les pays, les indicateurs de couverture sont calculés sur la base des données administratives et les données de population nationale. Au niveau international, ce sont les données de populations de la division de population des Nations Unies qui sont utilisées. Ces données sont révisées régulièrement. Pour une même année il existe dans certains cas une différence entre les données de population nationale et les données des Nations Unies d’où des différences entre les publications nationales et celles internationales.
+
+Dans bon nombres de pays africains, les données administratives issues du recensement scolaire présente parfois des variations assez importantes dues à des politiques éducatives en vigueur dans le pays. Certains directeurs surestiment l'effectif des élèves pour toucher plus de subventions ou sous-estiment l'effectif des élèves pour déclarer moins de frais scolaires.Ces variations ont des incidences sur la fiabilité des indicateurs calculés à partir de ces données.
+
+La disponibilité des enquêtes de ménages fournit des informations complémentaires qu’il est utile d’exploiter. Une pratique souhaitable consiste, si une enquête récente existe, à compléter les estimations faites à partir des données administratives par les informations fournies par celle-ci. En effet, les enquêtes réalisées auprès des ménages, malgré leurs limites, ont l’avantage de fournir à un moment donné, des informations à la fois sur le numérateur (les enfants scolarisés) et le dénominateur (le nombre total des enfants qu’ils soient scolarisés ou non). Néanmoins comme toutes les enquêtes par échantillonnage, 1) les enquêtes de ménages souffrent des aléas associés à leur taille (possible sous représentation d’une couche particulière de la population) et 2) elles ne sont disponibles qu’à certaines dates, n’autorisant pas la construction des séries dans le temps comme c’est le cas à partir des statistiques administratives.
+
+
+L'objectif de ce document est de mettre à la disposition des praticiens un guide d'élaboration d'analyse sectorielle de l'éducation à partir des enquêtes ménages et de R. R est un logiciel gratuit et Open Source qui permet la mise en oeuvre des analyses statistique simple. Il est simple à utiliser et présente beaucoup d'avantage dans son utilisation. 
+
+## Pourquoi le choix de R
+
+Le logiciel Stata est le logiciel le plus rependu dans les instituts nationaux des statistiques dans les pays du Sud. C'est un logiciel payant (même si le coût est abordable) et dont l'utilisation reproductible est fastidieux.
+
+De l'autre côté, R est un logiciel libre et Open Source dont l'utilisation est facile. Pourquoi utiliser R pour l'analyse des données:
+
+- R dispose d'une grande communauté d'utilisateurs et des ressources énormes et gratuites;
+- R est facile à utiliser pour l'analyse des données et pour la représentation graphique;
+- R permet l'analyse reproductible facile avec Rmarkdown et Quarto (le présent document est écrit avec quarto) pour produire des rapports sous plusieurs formats, des sites web, etc.;
+- R est gratuit et Open Source.
+
+## Qui sont les destinataires de ce document?
+
+Ce document est destiné aux cadres des directions de planification des ministères en charge des secteurs de l'éducation pour une meilleure exploitation des enquêtes ménages afin d'avoir une meilleure photographie de leur système éducatif.
+
+Il est destiné également à toute personne qui souhaiterait analyser un aspect spécifique de l'éducation à partir des données d'enquêtes ménages et avec R.
+
+
+

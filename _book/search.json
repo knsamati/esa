@@ -1,0 +1,363 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Pratique d’Analyse sectorielle de l’éducation avec R",
+    "section": "",
+    "text": "Preface\nLes enquêtes ménages constituent souvent une source de données sous-exploitée pour l’analyse sectorielle de l’éducation dans la plupart des pays africains. Les instituts nationaux des statistiques (INS) produisent régulièrement des enquêtes ménages sur des thématiques divers (dépenses des ménages, la santé et la malnutrition, etc.). La plupart de ces enquêtes disposent un volet éducation des ménages qui n’est souvent pas exploité ou très peu. Les documents d’analyse produits par les INS abordent superficiellement les différents secteurs socio-économiques. L’analyse de l’éducation se résume à la production des taux de fréquentation, de scolarisation et d’alphabétisation.\nCertains de données sont souvent utilisées lors de l’élaboration des documents d’analyse sectorielle de l’éducation en complément des données du recensement scolaire (SIGE1), sur une période de cinq ans dans la plupart des pays (les enquêtes les plus utilisées sont MICS2 et EDS3). La production et l’analyse sont menées par les experts d’appui à une équipe technique. C’est la seule fois que les données d’enquêtes ménages sont utilisées pour l’analyse sectorielle de l’éducation. Entre les cinq années d’élaboration de l’analyse sectorielle, d’autres enquêtes sont menées et pour servir de diagnostic intermédiaire.\nCe document aborde l’utilisation du logiciel statistique R pour l’analyse sectorielle de l’éducation à partir des enquêtes ménages. Il n’aborde pas l’interprétation des résultats mais la méthodologie de calcul des différents indicateurs et la mise en oeuvre à parti de R.Il aborde les différents sous-secteur de l’éducation (la scolarisation, la qualité, les dépenses des ménages, etc.)\nPour élaborer ce document, nous avons utilisé plusieurs ressources. Pour l’éducation, nous avons utilisé principalement les documents suivants:\nPour R nous avons utiliser les documents suivants:\nToutes ces ressources ont été d’une grande utilité pour la rédaction du présent documents.\nToute notre gratuite à toutes ces personnes qui ont cru en nous. Qu’ils en soit remercier.\nCe document constitue une première version sur les enquêtes ménages. Une deuxième version portera sur l’utilisation des données de recensement scolaire, SIGE pour élaborer l’analyse sectorielle de l’éducation.",
+    "crumbs": [
+      "Preface"
+    ]
+  },
+  {
+    "objectID": "intro.html",
+    "href": "intro.html",
+    "title": "Introduction",
+    "section": "",
+    "text": "Pourquoi utiliser les enquêtes menages dans l’analyse sectorielle de l’éducation\nLe suivi et l’évaluation des objectifs éducatifs nécessitent d’avoir à disposition des indicateurs fiables et des outils de suivi adéquats. Le calcul des indicateurs (taux brut de scolarisation, taux d’accès et d’achèvement…) à chacun des niveaux d’enseignement d’un système éducatif répond ainsi à deux exigences. La première est de pouvoir situer le pays par rapport aux résultats quantitatifs et qualitatifs de son système d’éducation et de formation (en matière de scolarisation offerte à l’ensemble de la population, filles/garçons, urbains/ruraux, riches/pauvres, région…). La seconde est d’arriver, sur la base de ces résultats, à une planification sur le court et moyen terme avec des stratégies adéquates pour atteindre les objectifs que se fixe le pays. Une mauvaise estimation des indicateurs de scolarisation ne peut de ce fait que conduire à une mauvaise estimation des besoins, et donc à une évaluation erronée du besoin de financement pour atteindre les objectifs fixés. Pour ce faire, les indicateurs sur lesquels se base la description du système doivent être autant que possible fiables et proches de la réalité qu’ils décrivent.\nDeux sources de données peuvent être mobilisées pour le calcul de ces indicateurs, il s’agit :\nL’utilisation des statistiques administratives nécessite des données démographiques fiables sur le nombre d’enfants à scolariser à chaque niveau d’enseignement, au niveau national et au niveau désagrégé le plus fin possible (genre, zone, régions, préfectures, sous-préfectures, communes, etc.). Une imprécision des données de population (projections de population faites sur un recensement ancien, ou sur des données de recensement qui n’ont pas été suffisamment corrigées des erreurs de déclaration sur les âges) a ainsi des conséquences directes sur les indicateurs de couverture scolaire. En effet, une surestimation des données de population entraîne une sous estimation des indicateurs de couverture (taux brut de scolarisation, taux d’accès, taux d’achèvement) du système et vice versa.\nDans les pays, les indicateurs de couverture sont calculés sur la base des données administratives et les données de population nationale. Au niveau international, ce sont les données de populations de la division de population des Nations Unies qui sont utilisées. Ces données sont révisées régulièrement. Pour une même année il existe dans certains cas une différence entre les données de population nationale et les données des Nations Unies d’où des différences entre les publications nationales et celles internationales.\nDans bon nombres de pays africains, les données administratives issues du recensement scolaire présente parfois des variations assez importantes dues à des politiques éducatives en vigueur dans le pays. Certains directeurs surestiment l’effectif des élèves pour toucher plus de subventions ou sous-estiment l’effectif des élèves pour déclarer moins de frais scolaires.Ces variations ont des incidences sur la fiabilité des indicateurs calculés à partir de ces données.\nLa disponibilité des enquêtes de ménages fournit des informations complémentaires qu’il est utile d’exploiter. Une pratique souhaitable consiste, si une enquête récente existe, à compléter les estimations faites à partir des données administratives par les informations fournies par celle-ci. En effet, les enquêtes réalisées auprès des ménages, malgré leurs limites, ont l’avantage de fournir à un moment donné, des informations à la fois sur le numérateur (les enfants scolarisés) et le dénominateur (le nombre total des enfants qu’ils soient scolarisés ou non). Néanmoins comme toutes les enquêtes par échantillonnage, 1) les enquêtes de ménages souffrent des aléas associés à leur taille (possible sous représentation d’une couche particulière de la population) et 2) elles ne sont disponibles qu’à certaines dates, n’autorisant pas la construction des séries dans le temps comme c’est le cas à partir des statistiques administratives.\nL’objectif de ce document est de mettre à la disposition des praticiens un guide d’élaboration d’analyse sectorielle de l’éducation à partir des enquêtes ménages et de R. R est un logiciel gratuit et Open Source qui permet la mise en oeuvre des analyses statistique simple. Il est simple à utiliser et présente beaucoup d’avantage dans son utilisation.",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "summary.html",
+    "href": "summary.html",
+    "title": "2  Summary",
+    "section": "",
+    "text": "In summary, this book has no content whatsoever.\n\n1 + 1\n\n[1] 2",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Summary</span>"
+    ]
+  },
+  {
+    "objectID": "references.html",
+    "href": "references.html",
+    "title": "References",
+    "section": "",
+    "text": "Knuth, Donald E. 1984. “Literate Programming.” Comput.\nJ. 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97.",
+    "crumbs": [
+      "References"
+    ]
+  },
+  {
+    "objectID": "scolarisation.html",
+    "href": "scolarisation.html",
+    "title": "Analyse de la scolarisation, de l’efficacité interne et des enfants hors du système scolaraire",
+    "section": "",
+    "text": "Le présent chapitre est consacrée à l’analyse de la scolarisation à travers les chapitres suivants:\n\nL’analyse de la capacité d’accueil du système : Taux brut et net de scolarisation;\nL’analyse de la couverture scolaire avec l’élaboration du profil de scolarité;\nL’analyse des questions d’offres et de la demande scolaire;\nL’analyse de l’efficacité interne du système à travers les flux d’élèves (le redoublement, la promotion et l’abandon);\nL’analyse des enfants hors du système scolaire (Out of scholl children, OOSC)",
+    "crumbs": [
+      "Analyse de la scolarisation, de l'efficacité interne et des enfants hors du système scolaraire"
+    ]
+  },
+  {
+    "objectID": "preparation.html",
+    "href": "preparation.html",
+    "title": "Préparation des données",
+    "section": "",
+    "text": "Présentation de l’enquête MICS\nL’enquête MICS est l’une des enquêtes les plus utilisées pour l’analyse sectorielle de l’éducation dans les différents pays. La section consacrée à l’éducation est assez documentée et prend en compte les différents secteurs de l’éducation. La base des données comporte les données suivantes:",
+    "crumbs": [
+      "Préparation des données"
+    ]
+  },
+  {
+    "objectID": "capacite.html",
+    "href": "capacite.html",
+    "title": "1  Analyse de la capacité d’accueil du système et de la couverture scolaire",
+    "section": "",
+    "text": "1.1 Analyse de la capacité d’accueil",
+    "crumbs": [
+      "Analyse de la scolarisation, de l'efficacité interne et des enfants hors du système scolaraire",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Analyse de la capacité d'accueil du système et de la couverture scolaire</span>"
+    ]
+  },
+  {
+    "objectID": "couverture.html",
+    "href": "couverture.html",
+    "title": "2  Analyse de la couverture scolaire : Profil de scolarisation",
+    "section": "",
+    "text": "In summary, this book has no content whatsoever.\n\n1 + 1\n\n[1] 2",
+    "crumbs": [
+      "Analyse de la scolarisation, de l'efficacité interne et des enfants hors du système scolaraire",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Analyse de la couverture scolaire : Profil de scolarisation</span>"
+    ]
+  },
+  {
+    "objectID": "demande_offre.html",
+    "href": "demande_offre.html",
+    "title": "2  Offre et demande pour les questions d’accès",
+    "section": "",
+    "text": "In summary, this book has no content whatsoever.\n\n1 + 1\n#&gt; [1] 2",
+    "crumbs": [
+      "Analyse de la scolarisation, de l'efficacité interne et des enfants hors du système scolaraire",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Offre et demande pour les questions d'accès</span>"
+    ]
+  },
+  {
+    "objectID": "efficacite_interne.html",
+    "href": "efficacite_interne.html",
+    "title": "6  Efficacité interne du système",
+    "section": "",
+    "text": "In summary, this book has no content whatsoever.\n\n1 + 1\n\n[1] 2",
+    "crumbs": [
+      "Analyse de la scolarisation, de l'efficacité interne et des enfants hors du système scolaraire",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Efficacité interne du système</span>"
+    ]
+  },
+  {
+    "objectID": "depense_menage.html",
+    "href": "depense_menage.html",
+    "title": "7  Analyse des depenses des menages",
+    "section": "",
+    "text": "In summary, this book has no content whatsoever.\n\n1 + 1\n#&gt; [1] 2",
+    "crumbs": [
+      "Analyse des depenses des menages",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Analyse des depenses des menages</span>"
+    ]
+  },
+  {
+    "objectID": "analyse_qualite.html",
+    "href": "analyse_qualite.html",
+    "title": "8  Analyse de la qualité du système",
+    "section": "",
+    "text": "In summary, this book has no content whatsoever.\n\n1 + 1\n#&gt; [1] 2",
+    "crumbs": [
+      "Analyse de la qualité du système",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Analyse de la qualité du système</span>"
+    ]
+  },
+  {
+    "objectID": "efficacite_externe_systeme.html",
+    "href": "efficacite_externe_systeme.html",
+    "title": "9  Analyse de l’efficacité externe du systeme",
+    "section": "",
+    "text": "In summary, this book has no content whatsoever.\n\n1 + 1\n#&gt; [1] 2",
+    "crumbs": [
+      "Analyse de l'efficacité externe du systeme",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Analyse de l'efficacité externe du systeme</span>"
+    ]
+  },
+  {
+    "objectID": "equite_systeme.html",
+    "href": "equite_systeme.html",
+    "title": "10  Analyse de l’équite dans le systeme",
+    "section": "",
+    "text": "In summary, this book has no content whatsoever.\n\n1 + 1\n#&gt; [1] 2",
+    "crumbs": [
+      "Analyse de l'équite dans le systeme",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Analyse de l'équite dans le systeme</span>"
+    ]
+  },
+  {
+    "objectID": "depense.html",
+    "href": "depense.html",
+    "title": "Analyse des depenses des menages",
+    "section": "",
+    "text": "In summary, this book has no content whatsoever.\n\n1 + 1\n#&gt; [1] 2",
+    "crumbs": [
+      "Analyse des depenses des menages"
+    ]
+  },
+  {
+    "objectID": "qualite.html",
+    "href": "qualite.html",
+    "title": "Analyse de la qualité du système",
+    "section": "",
+    "text": "In summary, this book has no content whatsoever.\n\n1 + 1\n#&gt; [1] 2",
+    "crumbs": [
+      "Analyse de la qualité du système"
+    ]
+  },
+  {
+    "objectID": "efficacite_externe.html",
+    "href": "efficacite_externe.html",
+    "title": "Analyse de l’efficacité externe du systeme",
+    "section": "",
+    "text": "In summary, this book has no content whatsoever.\n\n1 + 1\n#&gt; [1] 2",
+    "crumbs": [
+      "Analyse de l'efficacité externe du systeme"
+    ]
+  },
+  {
+    "objectID": "equite.html",
+    "href": "equite.html",
+    "title": "Analyse de l’équite dans le systeme",
+    "section": "",
+    "text": "In summary, this book has no content whatsoever.\n\n1 + 1\n#&gt; [1] 2",
+    "crumbs": [
+      "Analyse de l'équite dans le systeme"
+    ]
+  },
+  {
+    "objectID": "intro.html#pourquoi-utiliser-les-enquêtes-menages-dans-lanalyse-sectorielle-de-léducation",
+    "href": "intro.html#pourquoi-utiliser-les-enquêtes-menages-dans-lanalyse-sectorielle-de-léducation",
+    "title": "Introduction",
+    "section": "",
+    "text": "des données administratives des services statistiques des différents ministères en charge de l’éducation ;\ndes données issues d’enquêtes ménages réalisées à l’échelle du pays sur un échantillon représentatif des ménages.",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "index.html#qui-sont-les-destinataires-de-ce-document",
+    "href": "index.html#qui-sont-les-destinataires-de-ce-document",
+    "title": "Pratique d’Analyse sectorielle de l’éducation avec R",
+    "section": "Qui sont les destinataires de ce document?",
+    "text": "Qui sont les destinataires de ce document?\nCe document est destiné aux cadres des directions de planification des ministères en charge des secteurs de l’éducation pour une meilleure exploitation des enquêtes ménages afin d’avoir une meilleure photographie de leur système éducatif.\nIl est destiné également à toute personne qui veut analyser un aspect spécifique de l’éducation à\n\n\n\n\n\n\nAspect méthodologique\n\n\n\nUsing callouts is an effective way to highlight content that your reader give special consideration or attention.",
+    "crumbs": [
+      "Preface"
+    ]
+  },
+  {
+    "objectID": "index.html#pourquoi-le-choix-de-r",
+    "href": "index.html#pourquoi-le-choix-de-r",
+    "title": "Pratique d’Analyse sectorielle de l’éducation avec R",
+    "section": "Pourquoi le choix de R",
+    "text": "Pourquoi le choix de R\nLe logiciel Stata est le logiciel le plus rependu dans les instituts nationaux des statistiques dans les pays du Sud. C’est un logiciel payant (même si le coût est abordable) et dont l’utilisation reproductible est fastidieux.\nDe l’autre côté, R est un logiciel libre et Open Source dont l’utilisation est facile. Pourquoi utiliser R pour l’analyse des données:\n\nR dispose d’une grande communauté et des ressources énormes et gratuites;\nR est facile pour l’analyse des données et la représentation graphique;\nR permet l’analyse reproductile facile avec Rmarkdown et Quarto (le présent document est écrit avec quarto);",
+    "crumbs": [
+      "Preface"
+    ]
+  },
+  {
+    "objectID": "intro.html#pourquoi-le-choix-de-r",
+    "href": "intro.html#pourquoi-le-choix-de-r",
+    "title": "Introduction",
+    "section": "Pourquoi le choix de R",
+    "text": "Pourquoi le choix de R\nLe logiciel Stata est le logiciel le plus rependu dans les instituts nationaux des statistiques dans les pays du Sud. C’est un logiciel payant (même si le coût est abordable) et dont l’utilisation reproductible est fastidieux.\nDe l’autre côté, R est un logiciel libre et Open Source dont l’utilisation est facile. Pourquoi utiliser R pour l’analyse des données:\n\nR dispose d’une grande communauté d’utilisateurs et des ressources énormes et gratuites;\nR est facile à utiliser pour l’analyse des données et pour la représentation graphique;\nR permet l’analyse reproductible facile avec Rmarkdown et Quarto (le présent document est écrit avec quarto) pour produire des rapports sous plusieurs formats, des sites web, etc.;\nR est gratuit et Open Source.",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "intro.html#qui-sont-les-destinataires-de-ce-document",
+    "href": "intro.html#qui-sont-les-destinataires-de-ce-document",
+    "title": "Introduction",
+    "section": "Qui sont les destinataires de ce document?",
+    "text": "Qui sont les destinataires de ce document?\nCe document est destiné aux cadres des directions de planification des ministères en charge des secteurs de l’éducation pour une meilleure exploitation des enquêtes ménages afin d’avoir une meilleure photographie de leur système éducatif.\nIl est destiné également à toute personne qui souhaiterait analyser un aspect spécifique de l’éducation à partir des données d’enquêtes ménages et avec R.\n\n\n\n\n\n\nMéthodologie\n\n\n\nEn notant t ES (respectivement PAS ) l’effectif scolarisé (respectivement la population d’âge scolaire), on définit le taux brut de scolarisation sur un cycle particulier pour une année t donnée par:\n\\[\nTBS = \\frac{ES}{PAS}\n\\]",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "index.html#footnotes",
+    "href": "index.html#footnotes",
+    "title": "Pratique d’Analyse sectorielle de l’éducation avec R",
+    "section": "",
+    "text": "SIGE: Système d’information et de gestion de l’éducation (EMIS en anglais);↩︎\nMICS: Multiple indicators census survey https://mics.unicef.org/;↩︎\nEDS: Enquête démographique et de santé (DHS en anglais) https://dhsprogram.com/.↩︎",
+    "crumbs": [
+      "Preface"
+    ]
+  },
+  {
+    "objectID": "preparation.html#fusion-des-données",
+    "href": "preparation.html#fusion-des-données",
+    "title": "Préparation des données",
+    "section": "Fusion des données",
+    "text": "Fusion des données",
+    "crumbs": [
+      "Préparation des données"
+    ]
+  },
+  {
+    "objectID": "preparation.html#creation-de-nouvelles-variables-et-leur-labelisation",
+    "href": "preparation.html#creation-de-nouvelles-variables-et-leur-labelisation",
+    "title": "Préparation des données",
+    "section": "Creation de nouvelles variables et leur labelisation",
+    "text": "Creation de nouvelles variables et leur labelisation",
+    "crumbs": [
+      "Préparation des données"
+    ]
+  },
+  {
+    "objectID": "intro.html#méthodologie",
+    "href": "intro.html#méthodologie",
+    "title": "Introduction",
+    "section": "Méthodologie",
+    "text": "Méthodologie\nEn notant t ES (respectivement PAS ) l’effectif scolarisé (respectivement la population d’âge scolaire), on définit le taux brut de scolarisation sur un cycle particulier pour une année t donnée par:\n\\[\nTBS = \\frac{ES}{PAS}\n\\]\n:::",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "preparation.html#présentation-de-lenquête-mics",
+    "href": "preparation.html#présentation-de-lenquête-mics",
+    "title": "Préparation des données",
+    "section": "",
+    "text": "hl: Ce modeule regroupe les caractéristiques des membres de menages y compris la section éducation. Le poids de ponderation des membres du menages est hhweight\nwm: Ce module porte sur les femmes agées de 15-49 ans et le poids de sondage est wmweight\nmn: Ce module porte sur les hommes agés de 15-49 ans et le poids de sondage est mnweight\nfs: Cette base regroupe les informations sur les enfants de 5 à 17 ans selectionnés de manièere aléatoire fsweight\nch: Cette base regroupe les informations sur les enfants de moins de 5 ans. Le poids de sondage de ces enfants est chweight",
+    "crumbs": [
+      "Préparation des données"
+    ]
+  },
+  {
+    "objectID": "preparation.html#importation-des-données",
+    "href": "preparation.html#importation-des-données",
+    "title": "Préparation des données",
+    "section": "Importation des données",
+    "text": "Importation des données\nLes bases sont importées avec la fonction here () pour spécifier l’emplacement des bases de données qui sont dans le dossier data et import du package rio.\n\nhl &lt;- import(here(\"data/hl.sav\")) |&gt; as_tibble() # Importation de la base hl\nwm &lt;- import(here(\"data/wm.sav\")) |&gt; as_tibble() # Importation de la base wm\nmn &lt;- import(here(\"data/mn.sav\")) |&gt; as_tibble() # Importation de la base mn\nfs &lt;- import(here(\"data/fs.sav\")) |&gt; as_tibble() # Importation de la base fs\nch &lt;- import(here(\"data/ch.sav\")) |&gt; as_tibble() # Importation de la base ch",
+    "crumbs": [
+      "Préparation des données"
+    ]
+  },
+  {
+    "objectID": "preparation.html#les-packages-de-r-necessaires",
+    "href": "preparation.html#les-packages-de-r-necessaires",
+    "title": "Préparation des données",
+    "section": "Les packages de R necessaires",
+    "text": "Les packages de R necessaires\nPour l’analyse des données, les packages suivants seront necessaires:\n\nlibrary(tidyverse)  # Pour la manipulation des données\nlibrary(haven)      # pour l'importation des données du format SPSS dans R\nlibrary(labelled)   # Pour les labelles des variables\nlibrary(expss)      # Pour le formatage des tableaux dans R\nlibrary(xlsx)       # pour exporter les données dans Excel\nlibrary(naniar)     # pour remplacer les données vides avec la fonction replace_with_na \nlibrary(here)       # Pour le chemin des données\nlibrary(survey)     # Pour la manipulation des données\nlibrary(srvyr)      # pour la manipulation des données pondérées avec le style dplyr\nlibrary(rio)        # Pour l'importation des données",
+    "crumbs": [
+      "Préparation des données"
+    ]
+  },
+  {
+    "objectID": "preparation.html#creation-de-quelques-variables-dinterêt",
+    "href": "preparation.html#creation-de-quelques-variables-dinterêt",
+    "title": "Préparation des données",
+    "section": "Creation de quelques variables d’interêt",
+    "text": "Creation de quelques variables d’interêt\n\n# Création d'une variable age pour les différents niveau scolaire\n\nhl &lt;- hl |&gt; \n  mutate(\n    age_school = case_when(\n    schage&gt;= 6 & schage &lt;= 11 ~  1,\n    schage&gt;= 12 & schage &lt;= 15 ~ 2,\n    schage&gt;= 16 & schage &lt;= 18 ~ 3,\n    .default = NA\n  ))\n\nval_labels(hl$age_school) &lt;- c(\"Primaire\" = 1, \"Secondaire 1\" = 2,\"Secondaire 2\" = 3)\n\n\ncross_cases(hl,HL4,age_school)\n\n\n\n\n\n age_school \n\n\n\n Primaire \n Secondaire 1 \n Secondaire 2 \n\n\n\n\n Sexe \n\n\n   Masculin \n3291\n1800\n1031\n\n\n   Féminin \n3161\n1761\n922\n\n\n   #Total cases \n6452\n3561\n1953\n\n\n\n\n\ncross_cpct(hl,HL4,age_school)\n\n\n\n\n\n age_school \n\n\n\n Primaire \n Secondaire 1 \n Secondaire 2 \n\n\n\n\n Sexe \n\n\n   Masculin \n51\n50.5\n52.8\n\n\n   Féminin \n49\n49.5\n47.2\n\n\n   #Total cases \n6452\n3561\n1953",
+    "crumbs": [
+      "Préparation des données"
+    ]
+  },
+  {
+    "objectID": "preparation.html#fonction-pour-calculer-les-taux",
+    "href": "preparation.html#fonction-pour-calculer-les-taux",
+    "title": "Préparation des données",
+    "section": "Fonction pour calculer les taux",
+    "text": "Fonction pour calculer les taux\nEtant donné que la plupart des indicateurs de l’éducation élaborer à partir des enquêtes ménages sont des taux, nous allons écrire une fonction pour nous permettre de calculer ces taux plus rapidement\n\n\n#' numérateur : le numérateur du taux\n#' dénominateur: le dénominateur du taux\n\n\ntaux &lt;- function(numerateur,denominateur){\n    survey_total({{numerateur}},rm = TRUE)/survey_total({{denominateur}},na.rm = TRUE)\n  \n}\n\nval_labels(hl$HH6) &lt;- c(Urbian = 1, Rural = 2)\nval_labels(hl$HH7) &lt;- c(\"Maritime\" = 1, \"Plateaux\" = 2,\"Centrale\" = 3, \"Kara\" = 4,\"Savanes\" = 5, \"Lomé Commune\" = 6, \"Golfe Urbain\" = 7)\nval_labels(hl$HL4) &lt;- c(Masculin = 1, Feminin = 2)\n\nval_labels(hl$windex5) &lt;- c(\"Les plus pauvres\" = 1, \"Second\" = 2, \"Moyen\" = 3, \"Quatrième\" = 4,\"Les plus riches\" = 5)",
+    "crumbs": [
+      "Préparation des données"
+    ]
+  },
+  {
+    "objectID": "capacite.html#analyse-de-la-cpacité-daccueil",
+    "href": "capacite.html#analyse-de-la-cpacité-daccueil",
+    "title": "1  Analyse de la capacité d’accueil du système et de la couverture scolaire",
+    "section": "",
+    "text": "Méthodologie\n\n\n\nEn notant ES (respectivement PAS ) l’effectif des élèves scolarisés (respectivement la population d’enfant d’âge scolaire), on définit le Taux brut de scolarisation (TBS) sur un cycle particulier pour une année donnée par:\n\\[\nTBS = \\frac{ES}{PAS}\n\\] Le Taux brut de scolarisation donne une idée de la proportion d’élèves qu’un pays donnée est capable de scolariser par rapport au nombre total d’enfant en âge d’être scolarisé.(le TBS est un indicateur de capacité d’accueil). Un TBS de 100% signifie que le pays est capable d’accueillir dans ses établissements tous les enfants en âge d’être scolarisé.\nOn définit de la même maniere le Taux net de scolarisation (TNS)comme étant le rapport entre l’effectif des élèves scolarisés ayant l’officiel du cycle (6-11 ans pour le cas du Togo au primaire) sur la population d’enfant d’âge scolaire.\n\\[\nTNS = \\frac{ESAS}{PAS}\n\\]\nLe taux net de scolarisation rend compte des enfants en âge d’être à l’école et qui y sont effectivement. (le TNS est un indicateur de participation)\n\n\n\n1.1.1 Implémentation\nLa base hl permet de calculer la plupart des indicateurs de l’éducation. Pour les différents taux de scolarisation, on aura besoin de:\n\nschage pour calculer les différents intervalles d’âge;\nED9 la fréquentation scolaire au moment de la collecte\nED10A le niveau fréquenté au moment de l’enquête.\n\nOn calcule les différents effectifs ainsi:\n\n\nhl &lt;- hl |&gt;\n  mutate(\n    \n    PAS_prim = if_else(age_school == 1,1,0),\n    PAS_sec1 = if_else(age_school == 2,1,0),\n    PAS_sec2 = if_else(age_school == 3,1,0),\n    \n    ES_prim = if_else(ED9 == 1 & ED10A == 1,1,0),\n    ES_sec1 = if_else(ED9 == 1 & ED10A == 2,1,0),\n    ES_sec2 = if_else(ED9 == 1 & ED10A == 3,1,0),\n\n    ESAS_prim = if_else(age_school == 1 & ED9 == 1 & ED10A == 1,1,0),\n    ESAS_sec1 = if_else(age_school == 2 & ED9 == 1 & ED10A == 2,1,0),\n    ESAS_sec2 = if_else(age_school == 3 & ED9 == 1 & ED10A == 3,1,0),\n\n    NAR = case_when(\n    age_school == 1 & ED9 == 1 & ED10A == 1 ~ 1,\n    age_school == 2 & ED9 == 1 & ED10A == 2 ~ 1,\n    age_school == 3 & ED9 == 1 & ED10A == 3 ~ 1,\n    .default = 0\n    )\n  )\n\nhl_design &lt;- hl %&gt;% \n  as_survey_design(ids = 1,\n                   weights = hhweight,\n  )\n\n\n\nindic0 &lt;- hl_design |&gt;\n  #group_by(age_school) |&gt; \n  summarise(\n    TBS_prim = survey_total(ES_prim,na.rm = TRUE)/survey_total(PAS_prim,na.rm = TRUE)*100,\n    TNS_prim = survey_total(ESAS_prim,na.rm = TRUE)/survey_total(PAS_prim,na.rm = TRUE)*100,\n    TBS_sec1 = survey_total(ES_sec1,na.rm = TRUE)/survey_total(PAS_sec1,na.rm = TRUE)*100,\n    TNS_sec1 = survey_total(ESAS_sec1,na.rm = TRUE)/survey_total(PAS_sec1,na.rm = TRUE)*100,\n    TBS_sec2 = survey_total(ES_sec2,na.rm = TRUE)/survey_total(PAS_sec2,na.rm = TRUE)*100,\n    TNS_sec2 = survey_total(ESAS_sec2,na.rm = TRUE)/survey_total(PAS_sec2,na.rm = TRUE)*100\n            ) |&gt; \n  mutate(class = \"National\") |&gt; \n  mutate(levels = 0) |&gt; \n  select(TBS_prim,TNS_prim,TBS_sec1,TNS_sec1,TBS_sec2,TNS_sec2,class,levels)\n\nindic1 &lt;- hl_design |&gt;\n  group_by(HH6) |&gt; \n  summarise(\n    TBS_prim = survey_total(ES_prim,na.rm = TRUE)/survey_total(PAS_prim,na.rm = TRUE)*100,\n    TNS_prim = survey_total(ESAS_prim,na.rm = TRUE)/survey_total(PAS_prim,na.rm = TRUE)*100,\n    TBS_sec1 = survey_total(ES_sec1,na.rm = TRUE)/survey_total(PAS_sec1,na.rm = TRUE)*100,\n    TNS_sec1 = survey_total(ESAS_sec1,na.rm = TRUE)/survey_total(PAS_sec1,na.rm = TRUE)*100,\n    TBS_sec2 = survey_total(ES_sec2,na.rm = TRUE)/survey_total(PAS_sec2,na.rm = TRUE)*100,\n    TNS_sec2 = survey_total(ESAS_sec2,na.rm = TRUE)/survey_total(PAS_sec2,na.rm = TRUE)*100\n            ) |&gt; \n  mutate(class = \"urban/rural\") |&gt; \n  mutate(levels = HH6) |&gt; \n  select(TBS_prim,TNS_prim,TBS_sec1,TNS_sec1,TBS_sec2,TNS_sec2,class,levels)\n\nindic2 &lt;- hl_design |&gt;\n  group_by(HH7) |&gt; \n  summarise(\n    TBS_prim = survey_total(ES_prim,na.rm = TRUE)/survey_total(PAS_prim,na.rm = TRUE)*100,\n    TNS_prim = survey_total(ESAS_prim,na.rm = TRUE)/survey_total(PAS_prim,na.rm = TRUE)*100,\n    TBS_sec1 = survey_total(ES_sec1,na.rm = TRUE)/survey_total(PAS_sec1,na.rm = TRUE)*100,\n    TNS_sec1 = survey_total(ESAS_sec1,na.rm = TRUE)/survey_total(PAS_sec1,na.rm = TRUE)*100,\n    TBS_sec2 = survey_total(ES_sec2,na.rm = TRUE)/survey_total(PAS_sec2,na.rm = TRUE)*100,\n    TNS_sec2 = survey_total(ESAS_sec2,na.rm = TRUE)/survey_total(PAS_sec2,na.rm = TRUE)*100\n            ) |&gt; \n  mutate(class = \"Region\") |&gt; \n  mutate(levels = HH7) |&gt; \n  select(TBS_prim,TNS_prim,TBS_sec1,TNS_sec1,TBS_sec2,TNS_sec2,class,levels)\n\n\nindic3 &lt;- hl_design |&gt;\n  group_by(windex5) |&gt; \n  summarise(\n    TBS_prim = survey_total(ES_prim,na.rm = TRUE)/survey_total(PAS_prim,na.rm = TRUE)*100,\n    TNS_prim = survey_total(ESAS_prim,na.rm = TRUE)/survey_total(PAS_prim,na.rm = TRUE)*100,\n    TBS_sec1 = survey_total(ES_sec1,na.rm = TRUE)/survey_total(PAS_sec1,na.rm = TRUE)*100,\n    TNS_sec1 = survey_total(ESAS_sec1,na.rm = TRUE)/survey_total(PAS_sec1,na.rm = TRUE)*100,\n    TBS_sec2 = survey_total(ES_sec2,na.rm = TRUE)/survey_total(PAS_sec2,na.rm = TRUE)*100,\n    TNS_sec2 = survey_total(ESAS_sec2,na.rm = TRUE)/survey_total(PAS_sec2,na.rm = TRUE)*100\n            ) |&gt; \n  mutate(class = \"Richesse\") |&gt; \n  mutate(levels = windex5) |&gt; \n  select(TBS_prim,TNS_prim,TBS_sec1,TNS_sec1,TBS_sec2,TNS_sec2,class,levels)\n\n\nindic4 &lt;- hl_design |&gt;\n  group_by(HL4) |&gt; \n  summarise(\n    TBS_prim = survey_total(ES_prim,na.rm = TRUE)/survey_total(PAS_prim,na.rm = TRUE)*100,\n    TNS_prim = survey_total(ESAS_prim,na.rm = TRUE)/survey_total(PAS_prim,na.rm = TRUE)*100,\n    TBS_sec1 = survey_total(ES_sec1,na.rm = TRUE)/survey_total(PAS_sec1,na.rm = TRUE)*100,\n    TNS_sec1 = survey_total(ESAS_sec1,na.rm = TRUE)/survey_total(PAS_sec1,na.rm = TRUE)*100,\n    TBS_sec2 = survey_total(ES_sec2,na.rm = TRUE)/survey_total(PAS_sec2,na.rm = TRUE)*100,\n    TNS_sec2 = survey_total(ESAS_sec2,na.rm = TRUE)/survey_total(PAS_sec2,na.rm = TRUE)*100\n            ) |&gt; \n  mutate(class = \"Genre\") |&gt; \n  mutate(levels = HL4) |&gt; \n  select(TBS_prim,TNS_prim,TBS_sec1,TNS_sec1,TBS_sec2,TNS_sec2,class,levels)\n\n\ncouverture &lt;- rbind(indic0,indic1,indic2,indic3,indic4)\n\ncouverture\n#&gt; # A tibble: 17 × 8\n#&gt;    TBS_prim TNS_prim TBS_sec1 TNS_sec1 TBS_sec2 TNS_sec2 class       levels\n#&gt;       &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;        &lt;dbl&gt;\n#&gt;  1     121.     86.2     90.0     49.6     55.3    22.0  National         0\n#&gt;  2     120.     88.8    103.      61.3     76.9    33.1  urban/rural      1\n#&gt;  3     121.     84.7     81.5     42.1     37.5    12.8  urban/rural      2\n#&gt;  4     128.     88.2     83.3     45.9     47.2    16.1  Region           1\n#&gt;  5     126.     88.9     98.8     49.0     47.9    16.1  Region           2\n#&gt;  6     127.     90.7     88.7     44.7     51.1    19.1  Region           3\n#&gt;  7     107.     79.1     91.5     54.7     58.1    23.4  Region           4\n#&gt;  8     114.     81.4     70.3     38.9     30.9     9.47 Region           5\n#&gt;  9     120.     86.2     98.7     56.4     87.7    40.2  Region           6\n#&gt; 10     121.     88.6     98.9     62.6     68.8    34.0  Region           7\n#&gt; 11     117.     79.9     59.3     30.9     23.4     7.24 Richesse         1\n#&gt; 12     121.     86.6     82.7     42.9     28.8     7.47 Richesse         2\n#&gt; 13     126.     89.6    101.      50.8     46.0    15.9  Richesse         3\n#&gt; 14     123.     89.7    105.      60.8     73.5    26.5  Richesse         4\n#&gt; 15     117.     86.6    102.      63.4     87.2    43.4  Richesse         5\n#&gt; 16     121.     86.7     99.1     51.9     65.2    24.4  Genre            1\n#&gt; 17     120.     85.6     80.6     47.3     43.9    19.2  Genre            2\n\nhl_design |&gt;\n  #group_by(age_school) |&gt; \n  summarise(\n    TBS_prim = survey_total(ES_prim,na.rm = TRUE)/survey_total(PAS_prim,na.rm = TRUE)*100,\n    TBS_ratio = survey_ratio(ES_prim,PAS_prim,na.rm = TRUE)\n\n            )\n#&gt; # A tibble: 1 × 4\n#&gt;   TBS_prim TBS_prim_se TBS_ratio TBS_ratio_se\n#&gt;      &lt;dbl&gt;       &lt;dbl&gt;     &lt;dbl&gt;        &lt;dbl&gt;\n#&gt; 1     121.        108.      1.13      0.00937",
+    "crumbs": [
+      "Analyse de la scolarisation, de l'efficacité interne et des enfants hors du système scolaraire",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Analyse de la capacité d'accueil du système et de la couverture scolaire</span>"
+    ]
+  },
+  {
+    "objectID": "capacite.html#analyse-de-la-couverture-scolaire",
+    "href": "capacite.html#analyse-de-la-couverture-scolaire",
+    "title": "1  Analyse de la capacité d’accueil du système et de la couverture scolaire",
+    "section": "1.2 Analyse de la couverture scolaire",
+    "text": "1.2 Analyse de la couverture scolaire\n\n\n\n\n\n\nMéthodologie\n\n\n\nLe profil de scolarisation est la succession de taux d’accès aux différentes classes pour le cycle considéré. Le taux d’admission en première année constitue le point de départ du profil et le taux d’admission en dernière année la fin du profil. (NB: Ne pas confondre le taux d’admission en dernière année et le taux d’achèvement )\nLe taux d’accès TA pour une classe j, à une année t est égal au rapport de l’effectif des nouveaux entrants NE et la population ayant l’âge officiel de fréquenter cette classe j, l’année t\n\\[\nTA_{i,t} = \\frac{NE_{j,t}}{PA_{i,t}}\n\\]\n\n\n\n1.2.1 Imputation\nLa démarche porte sur les étapes suivantes:\n\nNumérateur par exemple pour le CP2, L’enfant est scolarisé au primaire en 2016-2017 (ED10A == 1), fréquente la classe de CP2 (ED10B == 2), qu’il soit nouveau dans la classe de CP2 (ED16A == 1 & ED16B  == 1, en d’autre terme, il était au CP1 l’année précédente);\nDénominateur pour le CP2, l’enfant doit être agé de 7 ans (schage==11)\n\n\nhl &lt;- hl |&gt; \n  mutate(\n    NE6 = ifelse(ED10A == 1 & ED10B == 2 & ED16A == 1 & ED16B  == 1 ,1,0),\n    PA6 = if_else(schage == 7,1,0)\n    )\n\n\n\nhl_design &lt;- hl %&gt;% \n  as_survey_design(weights = hhweight)\n\nhl_design |&gt;\n  group_by(HL4) |&gt; \n  summarise(\n    TA6 = survey_total(NE6,na.rm = TRUE)/survey_total(PA6,na.rm = TRUE)*100\n)\n#&gt; # A tibble: 2 × 3\n#&gt;   HL4            TA6 TA6_se\n#&gt;   &lt;dbl+lbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;\n#&gt; 1 1 [Masculin]  128.   121.\n#&gt; 2 2 [Feminin]   116.   109.\n\nfon &lt;-  function(niveauAn,classeAn,by){\n  if(classeAn&lt;2){\n    hl_design &lt;- hl |&gt; \n      mutate(\n        NE= ifelse(ED10A == {{niveauAn}} & ED10B == {{classeAn}} , 1,0),\n        PA = if_else(schage == {{classeAn}}+5,1,0)\n      ) |&gt;\n      as_survey_design(weights = hhweight) \n      \n  } else{\n    hl_design &lt;- hl |&gt; \n      mutate(\n        NE = ifelse(ED10A == {{niveauAn}} & ED10B == {{classeAn}} & ED16A == {{niveauAn}} & ED16B  == {{classeAn}}-1, 1,0),\n        PA = if_else(schage == {{classeAn}}+5,1,0)) |&gt;\n      as_survey_design(weights = hhweight) \n\n  }\n  \n hl_design |&gt;\n    group_by({{by}}) |&gt; \n    summarise(\n      \"TA_{{classeAn}}\" := survey_total(NE,na.rm = TRUE)/survey_total(PA,na.rm = TRUE)*100\n    )\n  \n}\n\nfon(1,1,HL4)\n#&gt; # A tibble: 2 × 3\n#&gt;   HL4           TA_1 TA_1_se\n#&gt;   &lt;dbl+lbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;\n#&gt; 1 1 [Masculin]  128.    115.\n#&gt; 2 2 [Feminin]   115.    104.",
+    "crumbs": [
+      "Analyse de la scolarisation, de l'efficacité interne et des enfants hors du système scolaraire",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Analyse de la capacité d'accueil du système et de la couverture scolaire</span>"
+    ]
+  },
+  {
+    "objectID": "capacite.html#analyse-de-la-capacité-daccueil",
+    "href": "capacite.html#analyse-de-la-capacité-daccueil",
+    "title": "1  Analyse de la capacité d’accueil du système et de la couverture scolaire",
+    "section": "",
+    "text": "Méthodologie\n\n\n\n\n1.1.1 1. Le taux brut de scolarisation\nEn notant ES (respectivement PAS ) l’effectif des élèves scolarisés (respectivement la population d’enfant d’âge scolaire), on définit le Taux brut de scolarisation (TBS) sur un cycle particulier pour une année donnée par:\n\\[\nTBS = \\frac{ES}{PAS}\n\\] Le Taux brut de scolarisation donne une idée de la proportion d’élèves qu’un pays donnée est capable de scolariser par rapport au nombre total d’enfant en âge d’être scolarisé.(le TBS est un indicateur de capacité d’accueil). Un TBS de 100% signifie que le pays est capable d’accueillir dans ses établissements tous les enfants en âge d’être scolarisé.\n\n\n1.1.2 2. Le taux net de scolarisation\nOn définit de la même manière le Taux net de scolarisation (TNS)comme étant le rapport entre l’effectif des élèves scolarisés ayant l’officiel du cycle (6-11 ans pour le cas du Togo au primaire) sur la population d’enfant d’âge scolaire.\n\\[\nTNS = \\frac{ESAS}{PAS}\n\\]\nLe taux net de scolarisation rend compte des enfants en âge d’être à l’école et qui y sont effectivement. (le TNS est un indicateur de participation)\n\n\n1.1.3 3. Le taux net de scolarisation ajusté\nCes deux taux pourraient être complétés par le taux net de scolarisation ajusté. Le TNSA mesure le pourcentage d’enfants d’un âge donné qui fréquentent un niveau d’enseignement compatible avec leur âge ou qui suivent un niveau d’enseignement supérieur. Le taux est dit « ajusté » car il inclut les deux groupes.\n\\[\nTNSA = \\frac{ESASA}{PAS}\n\\]\n\n\n\n\n1.1.4 Implémentation\nLa base hl permet de calculer la plupart des indicateurs de l’éducation. Pour les différents taux de scolarisation, on aura besoin de:\n\nschage pour calculer les différents intervalles d’âge;\nED9 la fréquentation scolaire au moment de la collecte\nED10A le niveau fréquenté au moment de l’enquête.\n\nOn calcule les différents effectifs ainsi:\n\nD’abord, On calcule le numérateur: par exemple pour le TBS du primaire, l’enfant fréquente au cours de l’année scolaire 2016-2017 (ED9 == 1) et est au primaire (ED10A);\nEnsuite, on calcule le dénominateur. Pour le TBS au primaire, l’enfant a l’âge d’être au primaire (age_school == 1 ou encore schage&gt;= 6 & schage &lt;= 11);\nEt enfin on fait la somme des enfants répondent au critère du numérateur et du numérateur. Le rapport de ces deux totaux donne le TBS du primaire (TBS_prim = survey_total(ES_prim,na.rm = TRUE)/survey_total(PAS_prim,na.rm = TRUE)).\n\n\n\nhl &lt;- hl |&gt;\n  mutate(\n    \n    PAS_prim = if_else(age_school == 1,1,0),\n    PAS_sec1 = if_else(age_school == 2,1,0),\n    PAS_sec2 = if_else(age_school == 3,1,0),\n    \n    ES_prim = if_else(ED9 == 1 & ED10A == 1,1,0),\n    ES_sec1 = if_else(ED9 == 1 & ED10A == 2,1,0),\n    ES_sec2 = if_else(ED9 == 1 & ED10A == 3,1,0),\n\n    ESAS_prim = if_else(age_school == 1 & ED9 == 1 & ED10A == 1,1,0),\n    ESAS_sec1 = if_else(age_school == 2 & ED9 == 1 & ED10A == 2,1,0),\n    ESAS_sec2 = if_else(age_school == 3 & ED9 == 1 & ED10A == 3,1,0),\n    \n    ESASA_prim = if_else(age_school == 1 & ED9 == 1 & (ED10A == 1 | ED10A == 2),1,0),\n    ESASA_sec1 = if_else(age_school == 2 & ED9 == 1 & (ED10A == 2 | ED10A == 3),1,0),\n    ESASA_sec2 = if_else(age_school == 3 & ED9 == 1 & (ED10A == 3 | ED10A == 4 | ED10A == 4),1,0),\n\n    NAR = case_when(\n    age_school == 1 & ED9 == 1 & ED10A == 1 ~ 1,\n    age_school == 2 & ED9 == 1 & ED10A == 2 ~ 1,\n    age_school == 3 & ED9 == 1 & ED10A == 3 ~ 1,\n    .default = 0\n    )\n  )\n\nhl_design &lt;- hl %&gt;% \n  as_survey_design(weights = hhweight)\n\n\nindic0 &lt;- hl_design |&gt;\n  #group_by(age_school) |&gt; \n  summarise(\n    TBS_prim = survey_total(ES_prim,na.rm = TRUE)/survey_total(PAS_prim,na.rm = TRUE)*100,\n    TNS_prim = survey_total(ESAS_prim,na.rm = TRUE)/survey_total(PAS_prim,na.rm = TRUE)*100,\n    TNSA_prim = survey_total(ESASA_prim,na.rm = TRUE)/survey_total(PAS_prim,na.rm = TRUE)*100,\n    TBS_sec1 = survey_total(ES_sec1,na.rm = TRUE)/survey_total(PAS_sec1,na.rm = TRUE)*100,\n    TNS_sec1 = survey_total(ESAS_sec1,na.rm = TRUE)/survey_total(PAS_sec1,na.rm = TRUE)*100,\n    TNSA_sec1 = survey_total(ESASA_sec1,na.rm = TRUE)/survey_total(PAS_sec1,na.rm = TRUE)*100,\n    TBS_sec2 = survey_total(ES_sec2,na.rm = TRUE)/survey_total(PAS_sec2,na.rm = TRUE)*100,\n    TNS_sec2 = survey_total(ESAS_sec2,na.rm = TRUE)/survey_total(PAS_sec2,na.rm = TRUE)*100,\n    TNSA_sec2 = survey_total(ESASA_sec2,na.rm = TRUE)/survey_total(PAS_sec2,na.rm = TRUE)*100) |&gt;\n  mutate(class = \"National\",levels = 0) |&gt; \n  select(TBS_prim,TNS_prim,TNSA_prim,TBS_sec1,TNS_sec1,TNSA_sec1,TBS_sec2,TNS_sec2,TNSA_sec2,class,levels)\n\nindic1 &lt;- hl_design |&gt;\n  group_by(HH6) |&gt; \n  summarise(\n    TBS_prim = survey_total(ES_prim,na.rm = TRUE)/survey_total(PAS_prim,na.rm = TRUE)*100,\n    TNS_prim = survey_total(ESAS_prim,na.rm = TRUE)/survey_total(PAS_prim,na.rm = TRUE)*100,\n    TNSA_prim = survey_total(ESASA_prim,na.rm = TRUE)/survey_total(PAS_prim,na.rm = TRUE)*100,\n    TBS_sec1 = survey_total(ES_sec1,na.rm = TRUE)/survey_total(PAS_sec1,na.rm = TRUE)*100,\n    TNS_sec1 = survey_total(ESAS_sec1,na.rm = TRUE)/survey_total(PAS_sec1,na.rm = TRUE)*100,\n    TNSA_sec1 = survey_total(ESASA_sec1,na.rm = TRUE)/survey_total(PAS_sec1,na.rm = TRUE)*100,\n    TBS_sec2 = survey_total(ES_sec2,na.rm = TRUE)/survey_total(PAS_sec2,na.rm = TRUE)*100,\n    TNS_sec2 = survey_total(ESAS_sec2,na.rm = TRUE)/survey_total(PAS_sec2,na.rm = TRUE)*100,\n    TNSA_sec2 = survey_total(ESASA_sec2,na.rm = TRUE)/survey_total(PAS_sec2,na.rm = TRUE)*100) |&gt;\n  mutate(class = \"urban/rural\",levels = HH6) |&gt; \n    select(TBS_prim,TNS_prim,TNSA_prim,TBS_sec1,TNS_sec1,TNSA_sec1,TBS_sec2,TNS_sec2,TNSA_sec2,class,levels)\n\nindic2 &lt;- hl_design |&gt;\n  group_by(HH7) |&gt; \n  summarise(\n    TBS_prim = survey_total(ES_prim,na.rm = TRUE)/survey_total(PAS_prim,na.rm = TRUE)*100,\n    TNS_prim = survey_total(ESAS_prim,na.rm = TRUE)/survey_total(PAS_prim,na.rm = TRUE)*100,\n    TNSA_prim = survey_total(ESASA_prim,na.rm = TRUE)/survey_total(PAS_prim,na.rm = TRUE)*100,\n    TBS_sec1 = survey_total(ES_sec1,na.rm = TRUE)/survey_total(PAS_sec1,na.rm = TRUE)*100,\n    TNS_sec1 = survey_total(ESAS_sec1,na.rm = TRUE)/survey_total(PAS_sec1,na.rm = TRUE)*100,\n    TNSA_sec1 = survey_total(ESASA_sec1,na.rm = TRUE)/survey_total(PAS_sec1,na.rm = TRUE)*100,\n    TBS_sec2 = survey_total(ES_sec2,na.rm = TRUE)/survey_total(PAS_sec2,na.rm = TRUE)*100,\n    TNS_sec2 = survey_total(ESAS_sec2,na.rm = TRUE)/survey_total(PAS_sec2,na.rm = TRUE)*100,\n    TNSA_sec2 = survey_total(ESASA_sec2,na.rm = TRUE)/survey_total(PAS_sec2,na.rm = TRUE)*100) |&gt; \n  mutate(class = \"Region\",levels = HH7) |&gt; \n    select(TBS_prim,TNS_prim,TNSA_prim,TBS_sec1,TNS_sec1,TNSA_sec1,TBS_sec2,TNS_sec2,TNSA_sec2,class,levels)\n\n\nindic3 &lt;- hl_design |&gt;\n  group_by(windex5) |&gt; \n  summarise(\n    TBS_prim = survey_total(ES_prim,na.rm = TRUE)/survey_total(PAS_prim,na.rm = TRUE)*100,\n    TNS_prim = survey_total(ESAS_prim,na.rm = TRUE)/survey_total(PAS_prim,na.rm = TRUE)*100,\n    TNSA_prim = survey_total(ESASA_prim,na.rm = TRUE)/survey_total(PAS_prim,na.rm = TRUE)*100,\n    TBS_sec1 = survey_total(ES_sec1,na.rm = TRUE)/survey_total(PAS_sec1,na.rm = TRUE)*100,\n    TNS_sec1 = survey_total(ESAS_sec1,na.rm = TRUE)/survey_total(PAS_sec1,na.rm = TRUE)*100,\n    TNSA_sec1 = survey_total(ESASA_sec1,na.rm = TRUE)/survey_total(PAS_sec1,na.rm = TRUE)*100,\n    TBS_sec2 = survey_total(ES_sec2,na.rm = TRUE)/survey_total(PAS_sec2,na.rm = TRUE)*100,\n    TNS_sec2 = survey_total(ESAS_sec2,na.rm = TRUE)/survey_total(PAS_sec2,na.rm = TRUE)*100,\n    TNSA_sec2 = survey_total(ESASA_sec2,na.rm = TRUE)/survey_total(PAS_sec2,na.rm = TRUE)*100) |&gt;\n  mutate(class = \"Richesse\",levels = windex5) |&gt; \n    select(TBS_prim,TNS_prim,TNSA_prim,TBS_sec1,TNS_sec1,TNSA_sec1,TBS_sec2,TNS_sec2,TNSA_sec2,class,levels)\n\n\nindic4 &lt;- hl_design |&gt;\n  group_by(HL4) |&gt; \n  summarise(\n    TBS_prim = survey_total(ES_prim,na.rm = TRUE)/survey_total(PAS_prim,na.rm = TRUE)*100,\n    TNS_prim = survey_total(ESAS_prim,na.rm = TRUE)/survey_total(PAS_prim,na.rm = TRUE)*100,\n    TNSA_prim = survey_total(ESASA_prim,na.rm = TRUE)/survey_total(PAS_prim,na.rm = TRUE)*100,\n    TBS_sec1 = survey_total(ES_sec1,na.rm = TRUE)/survey_total(PAS_sec1,na.rm = TRUE)*100,\n    TNS_sec1 = survey_total(ESAS_sec1,na.rm = TRUE)/survey_total(PAS_sec1,na.rm = TRUE)*100,\n    TNSA_sec1 = survey_total(ESASA_sec1,na.rm = TRUE)/survey_total(PAS_sec1,na.rm = TRUE)*100,\n    TBS_sec2 = survey_total(ES_sec2,na.rm = TRUE)/survey_total(PAS_sec2,na.rm = TRUE)*100,\n    TNS_sec2 = survey_total(ESAS_sec2,na.rm = TRUE)/survey_total(PAS_sec2,na.rm = TRUE)*100,\n    TNSA_sec2 = survey_total(ESASA_sec2,na.rm = TRUE)/survey_total(PAS_sec2,na.rm = TRUE)*100) |&gt; \n  mutate(class = \"Genre\",levels = HL4) |&gt; \n    select(TBS_prim,TNS_prim,TNSA_prim,TBS_sec1,TNS_sec1,TNSA_sec1,TBS_sec2,TNS_sec2,TNSA_sec2,class,levels)\n\n\ncouverture &lt;- rbind(indic0,indic1,indic2,indic3,indic4) \n\ncouverture &lt;- couverture |&gt; \n  mutate(etiquette = case_when(\n    class==\"National\" & levels ==0 ~ \"Togo\",\n    class==\"urban/rural\"& levels ==1 ~ \"Urbian\",\n    class==\"urban/rural\"& levels ==2 ~ \"Rural\",\n    class==\"Region\"& levels ==1 ~ \"Maritime\",\n    class==\"Region\"& levels ==2 ~ \"Plateaux\",\n    class==\"Region\"& levels ==3 ~ \"Centrale\",\n    class==\"Region\"& levels ==4 ~ \"Kara\",\n    class==\"Region\"& levels ==5 ~ \"Savanes\",\n    class==\"Region\"& levels ==6 ~ \"Lome-Comm\",\n    class==\"Region\"& levels ==7 ~ \"Golfe-Urbain\",\n    class==\"Richesse\"& levels ==1 ~ \"plus pauvres\",\n    class==\"Richesse\"& levels ==2 ~ \"Second\",\n    class==\"Richesse\"& levels ==3 ~ \"Moyen\",\n    class==\"Richesse\"& levels ==4 ~ \"Quatrième\",\n    class==\"Richesse\"& levels ==5 ~ \"plus riches\",\n    class==\"Genre\"& levels ==1 ~ \"Masculin\",\n    class==\"Genre\"& levels ==2 ~ \"Feminin\",\n    \n  ))\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLes indicateurs de couverture: TBS et TNS\n\n\nCalcul pour le primaire et le secondaire\n\n\n\n\nPrimaire (%)\n\n\nSecondaire 1 (%)\n\n\nSecondaire 2 (%)\n\n\n\nTBS\nTNS\nTNSA\nTBS\nTNS\nTNSA\nTBS\nTNS\nTNSA\n\n\n\n\nNational\n\n\nTogo\n120.73\n86.18\n91.09\n89.95\n49.61\n53.02\n55.27\n21.99\n23.67\n\n\nurban/rural\n\n\nUrbian\n119.85\n88.82\n96.67\n103.09\n61.28\n67.79\n76.88\n33.14\n36.66\n\n\nRural\n121.22\n84.75\n88.06\n81.51\n42.11\n43.52\n37.52\n12.84\n13.00\n\n\nRegion\n\n\nMaritime\n127.81\n88.25\n92.83\n83.28\n45.94\n48.01\n47.24\n16.14\n16.53\n\n\nPlateaux\n125.66\n88.93\n93.15\n98.79\n49.04\n52.12\n47.90\n16.05\n16.05\n\n\nCentrale\n126.99\n90.71\n93.40\n88.72\n44.74\n46.96\n51.12\n19.06\n19.06\n\n\nKara\n106.68\n79.11\n83.53\n91.54\n54.73\n57.81\n58.05\n23.38\n24.43\n\n\nSavanes\n113.90\n81.36\n83.87\n70.35\n38.94\n38.99\n30.87\n9.47\n9.47\n\n\nLome-Comm\n119.60\n86.22\n96.77\n98.73\n56.37\n63.66\n87.75\n40.21\n45.56\n\n\nGolfe-Urbain\n120.63\n88.62\n96.74\n98.86\n62.65\n70.80\n68.80\n34.04\n39.85\n\n\nRichesse\n\n\nplus pauvres\n117.24\n79.92\n81.17\n59.30\n30.86\n30.98\n23.36\n7.24\n7.24\n\n\nSecond\n120.78\n86.56\n89.18\n82.68\n42.91\n43.71\n28.84\n7.47\n7.47\n\n\nMoyen\n126.13\n89.57\n94.98\n101.09\n50.81\n52.69\n45.96\n15.88\n16.14\n\n\nQuatrième\n122.52\n89.70\n97.19\n105.40\n60.84\n66.21\n73.50\n26.45\n28.74\n\n\nplus riches\n116.87\n86.57\n96.64\n102.29\n63.40\n72.46\n87.23\n43.40\n48.07\n\n\nGenre\n\n\nMasculin\n121.33\n86.72\n91.61\n99.13\n51.85\n55.62\n65.19\n24.40\n26.54\n\n\nFeminin\n120.12\n85.62\n90.56\n80.64\n47.34\n50.38\n43.90\n19.24\n20.38\n\n\n\nSOURCE: MICS 2017 | Calcul de l’auteurTABLE: Komlan Samati\n\n\n\n\n\n\n\n\n\n\n1.1.5 Les limites des taux de scolarisation\nLes limites des taux de scolarisation sont de deux ordres:\n\nCes taux surestiment la scolarisation car prenant en compte les redoublement;\nCes taux prennent les entrées tardives (c’est le cas pour le taux brut de scolarisation)\n\nPour mieux appréhender la scolarisation, on a recours au profil de scolarisation.",
+    "crumbs": [
+      "Analyse de la scolarisation, de l'efficacité interne et des enfants hors du système scolaraire",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Analyse de la capacité d'accueil du système et de la couverture scolaire</span>"
+    ]
+  }
+]

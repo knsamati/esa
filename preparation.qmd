@@ -1,0 +1,125 @@
+# Préparation des données {.unnumbered}
+
+{{< include _setup.qmd >}}
+
+Cette partie aborde les différentes parties préparatoire à l'analyse des données. On suppose dans ce document que les données ont été apurées.
+
+## Présentation de l'enquête MICS
+
+L'enquête MICS est l'une des enquêtes les plus utilisées pour l'analyse sectorielle de l'éducation dans les différents pays. La section consacrée à l'éducation est assez documentée et prend en compte les différents secteurs de l'éducation. La base des données comporte les données suivantes:
+
+* hl: Ce modeule regroupe les caractéristiques des membres de menages y compris la section éducation. Le poids de ponderation des membres du menages est ```hhweight```
+* wm: Ce module porte sur les femmes agées de 15-49 ans et le poids de sondage est ```wmweight```
+* mn: Ce module porte sur les hommes agés de 15-49 ans et le poids de sondage est ```mnweight```
+* fs: Cette base regroupe les informations sur les enfants de 5 à 17 ans selectionnés de manièere aléatoire ```fsweight```
+* ch: Cette base regroupe les informations sur les enfants de moins de 5 ans. Le poids de sondage de ces enfants est ```chweight```
+
+## Les packages de R necessaires
+
+Pour l'analyse des données, les packages suivants seront necessaires:
+
+```{r}
+#| warning: false
+#| message: false
+
+library(tidyverse)  # Pour la manipulation des données
+library(haven)      # pour l'importation des données du format SPSS dans R
+library(labelled)   # Pour les labelles des variables
+library(expss)      # Pour le formatage des tableaux dans R
+library(xlsx)       # pour exporter les données dans Excel
+library(naniar)     # pour remplacer les données vides avec la fonction replace_with_na 
+library(here)       # Pour le chemin des données
+library(survey)     # Pour la manipulation des données
+library(srvyr)      # pour la manipulation des données pondérées avec le style dplyr
+library(rio)        # Pour l'importation des données
+
+```
+
+
+
+## Importation des données
+
+Les bases sont importées avec la fonction ```here ()``` pour spécifier l'emplacement des bases de données qui sont dans le dossier ```data``` et ```import``` du package ```rio```.
+
+```{r}
+#| warning: false
+#| message: false
+
+hl <- import(here("data/mics/hl.sav")) |> as_tibble() # Importation de la base hl
+wm <- import(here("data/mics/wm.sav")) |> as_tibble() # Importation de la base wm
+mn <- import(here("data/mics/mn.sav")) |> as_tibble() # Importation de la base mn
+fs <- import(here("data/mics/fs.sav")) |> as_tibble() # Importation de la base fs
+ch <- import(here("data/mics/ch.sav")) |> as_tibble() # Importation de la base ch
+
+
+```
+
+
+## Creation de quelques variables d'interêt
+
+
+```{r}
+# Création d'une variable age pour les différents niveau scolaire
+
+hl <- hl |> 
+  mutate(
+    age_school = case_when(
+    schage>= 6 & schage <= 11 ~  1,
+    schage>= 12 & schage <= 15 ~ 2,
+    schage>= 16 & schage <= 18 ~ 3,
+    .default = NA
+  ))
+
+val_labels(hl$age_school) <- c("Primaire" = 1, "Secondaire 1" = 2,"Secondaire 2" = 3)
+
+
+cross_cases(hl,HL4,age_school)
+
+cross_cpct(hl,HL4,age_school)
+
+```
+
+
+
+## Fonction pour calculer les taux
+
+Etant donné que la plupart des indicateurs de l'éducation élaborer à partir des enquêtes ménages sont des taux, nous allons écrire une fonction pour nous permettre de calculer ces taux plus rapidement
+
+```{r}
+#| eval: false
+
+
+#' numérateur : le numérateur du taux
+#' dénominateur: le dénominateur du taux
+
+
+taux <- function(numerateur,denominateur){
+    survey_total({{numerateur}},rm = TRUE)/survey_total({{denominateur}},na.rm = TRUE)
+  
+}
+
+val_labels(hl$HH6) <- c(Urbian = 1, Rural = 2)
+val_labels(hl$HH7) <- c("Maritime" = 1, "Plateaux" = 2,"Centrale" = 3, "Kara" = 4,"Savanes" = 5, "Lomé Commune" = 6, "Golfe Urbain" = 7)
+val_labels(hl$HL4) <- c(Masculin = 1, Feminin = 2)
+
+val_labels(hl$windex5) <- c("Les plus pauvres" = 1, "Second" = 2, "Moyen" = 3, "Quatrième" = 4,"Les plus riches" = 5)
+
+
+```
+
+
+
+
+## Fusion des données
+
+
+
+
+
+
+## Creation de nouvelles variables et leur labelisation
+
+
+
+
+

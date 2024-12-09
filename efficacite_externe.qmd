@@ -1,0 +1,12 @@
+# Analyse de l'efficacité externe du systeme
+
+{{< include _setup.qmd >}}
+
+In summary, this book has no content whatsoever.
+
+```{r}
+1 + 1
+```
+
+
+

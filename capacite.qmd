@@ -1,0 +1,305 @@
+# Analyse de la capacité d'accueil du système et de la couverture scolaire
+
+## Analyse de la capacité d'accueil 
+
+{{< include _setup.qmd >}}
+
+:::{.callout-note appearance="simple"}
+
+## Méthodologie
+
+### 1. Le taux brut de scolarisation
+
+En notant ```ES``` (respectivement ```PAS``` ) l’effectif des élèves scolarisés (respectivement la population d'enfant d’âge scolaire), on définit le Taux brut de scolarisation (```TBS```) sur un cycle particulier pour une année donnée par:
+
+$$
+TBS = \frac{ES}{PAS}
+$$
+Le Taux brut de scolarisation donne une idée de la proportion d'élèves qu'un pays donnée est capable de scolariser par rapport au nombre total d'enfant en âge d'être scolarisé.(le TBS est un indicateur de **capacité d'accueil**). Un TBS de 100% signifie que le pays est capable d'accueillir dans ses établissements tous les enfants en âge d'être scolarisé.
+
+### 2. Le taux net de scolarisation
+
+On définit de la même manière le Taux net de scolarisation (```TNS```)comme étant le rapport entre l'effectif des élèves scolarisés ayant l'officiel du cycle (6-11 ans pour le cas du Togo au primaire) sur la population d'enfant d'âge scolaire.
+
+$$
+TNS = \frac{ESAS}{PAS}
+$$
+
+Le taux net de scolarisation rend compte des enfants en âge d'être à l'école et qui y sont effectivement. (le TNS est un indicateur de **participation**)
+
+### 3. Le taux net de scolarisation ajusté
+
+Ces deux taux pourraient être complétés par le taux net de scolarisation ajusté. Le TNSA mesure le pourcentage d’enfants d’un âge donné qui fréquentent un niveau d’enseignement compatible avec leur
+âge ou qui suivent un niveau d’enseignement supérieur. Le taux est dit « ajusté » car il inclut les deux groupes.
+
+$$
+TNSA = \frac{ESASA}{PAS}
+$$
+
+:::
+
+### Implémentation
+
+La base ```hl``` permet de calculer la plupart des indicateurs de l'éducation.
+Pour les différents taux de scolarisation, on aura besoin de:
+
+- ```schage``` pour calculer les différents intervalles d'âge;
+- ```ED9``` la fréquentation scolaire au moment de la collecte
+- ```ED10A``` le niveau fréquenté au moment de l'enquête.
+
+On calcule les différents effectifs ainsi:
+
+- D'abord, On calcule le numérateur: par exemple pour le TBS du primaire, l'enfant fréquente au cours de l'année scolaire 2016-2017 (```ED9 == 1```) et est au primaire (```ED10A```);
+- Ensuite, on calcule le dénominateur. Pour le TBS au primaire, l'enfant a l'âge d'être au primaire (```age_school == 1``` ou encore ```schage>= 6 & schage <= 11```);
+- Et enfin on fait la somme des enfants répondent au critère du numérateur et du numérateur. Le rapport de ces deux totaux donne le TBS du primaire (```TBS_prim = survey_total(ES_prim,na.rm = TRUE)/survey_total(PAS_prim,na.rm = TRUE)```).
+
+
+
+```{r}
+
+hl <- hl |>
+  mutate(
+    
+   PAS_prim = if_else(age_school == 1,1,0),
+    PAS_col = if_else(age_school == 2,1,0),
+    PAS_lyc = if_else(age_school == 3,1,0),
+    
+    ES_prim = if_else(ED9 == 1 & ED10A == 1,1,0),
+    ES_col = if_else(ED9 == 1 & ED10A == 2,1,0),
+    ES_lyc = if_else(ED9 == 1 & ED10A == 3,1,0),
+    
+    ESAS_prim = if_else(age_school == 1 & ED9 == 1 & ED10A == 1,1,0),
+    ESAS_col = if_else(age_school == 2 & ED9 == 1 & ED10A == 2,1,0),
+    ESAS_lyc = if_else(age_school == 3 & ED9 == 1 & ED10A == 3,1,0),
+    
+    ESASA_prim = if_else(age_school == 1 & ED9 == 1 & (ED10A == 1 | ED10A == 2),1,0),
+    ESASA_col = if_else(age_school == 2 & ED9 == 1 & (ED10A == 2 | ED10A == 3),1,0),
+    ESASA_lyc = if_else(age_school == 3 & ED9 == 1 & (ED10A == 3 | ED10A == 4 | ED10A == 4),1,0),
+    
+    NAR = case_when(
+    age_school == 1 & ED9 == 1 & ED10A == 1 ~ 1,
+    age_school == 2 & ED9 == 1 & ED10A == 2 ~ 1,
+    age_school == 3 & ED9 == 1 & ED10A == 3 ~ 1,
+    .default = 0
+    )
+  )
+
+hl_design <- hl %>% 
+  as_survey_design(weights = hhweight)
+
+
+indic_sco = function(numerateur1,numerateur2,numerateur3,denominateur,niveau,by,class){
+  
+    hl_design |>
+      group_by({{by}}) |> 
+      summarise(
+        'TBS_{niveau}' := survey_total({{numerateur1}},na.rm = TRUE)/survey_total({{denominateur}},na.rm = TRUE)*100,
+        'TNS_{niveau}' := survey_total({{numerateur2}},na.rm = TRUE)/survey_total({{denominateur}},na.rm = TRUE)*100,
+        'TNSA_{niveau}' := survey_total({{numerateur3}},na.rm = TRUE)/survey_total({{denominateur}},na.rm = TRUE)*100
+      ) |>
+      mutate(class = {{class}},levels = {{by}}) |> 
+      select(-contains("_se"),-1)  
+}
+
+
+indic10 <- indic_sco(ES_prim,ESAS_prim,ESASA_prim,PAS_prim,"prim",0,"National")
+indic11 <- indic_sco(ES_prim,ESAS_prim,ESASA_prim,PAS_prim,"prim",HL4,"Genre")
+indic12 <- indic_sco(ES_prim,ESAS_prim,ESASA_prim,PAS_prim,"prim",HH6,"Urbain/Rural")
+indic13 <- indic_sco(ES_prim,ESAS_prim,ESASA_prim,PAS_prim,"prim",HH7,"Region")
+indic14 <- indic_sco(ES_prim,ESAS_prim,ESASA_prim,PAS_prim,"prim",windex5,"Richesse")
+
+indic_prim = rbind(indic10,indic11,indic12,indic13,indic14)
+
+indic20 <- indic_sco(ES_col,ESAS_col,ESASA_col,PAS_col,"col",0,"National")
+indic21 <- indic_sco(ES_col,ESAS_col,ESASA_col,PAS_col,"col",HL4,"Genre")
+indic22 <- indic_sco(ES_col,ESAS_col,ESASA_col,PAS_col,"col",HH6,"Urbain/Rural")
+indic23 <- indic_sco(ES_col,ESAS_col,ESASA_col,PAS_col,"col",HH7,"Region")
+indic24 <- indic_sco(ES_col,ESAS_col,ESASA_col,PAS_col,"col",windex5,"Richesse")
+
+indic_sec1 = rbind(indic20,indic21,indic22,indic23,indic24)
+
+indic30 <- indic_sco(ES_lyc,ESAS_lyc,ESASA_lyc,PAS_lyc,"lyc",0,"National")
+indic31 <- indic_sco(ES_lyc,ESAS_lyc,ESASA_lyc,PAS_lyc,"lyc",HL4,"Genre")
+indic32 <- indic_sco(ES_lyc,ESAS_lyc,ESASA_lyc,PAS_lyc,"lyc",HH6,"Urbain/Rural")
+indic33 <- indic_sco(ES_lyc,ESAS_lyc,ESASA_lyc,PAS_lyc,"lyc",HH7,"Region")
+indic34 <- indic_sco(ES_lyc,ESAS_lyc,ESASA_lyc,PAS_lyc,"lyc",windex5,"Richesse")
+
+indic_sec2 = rbind(indic30,indic31,indic32,indic33,indic34)
+
+df <- cbind(indic_prim |> select(-c(class,levels)),indic_sec1 |> select(-c(class,levels)),indic_sec2)
+
+```
+
+
+
+```{r}
+#| echo: false
+
+
+
+couverture <- df |> 
+  mutate(etiquette = case_when(
+    class=="National" & levels ==0 ~ "Togo",
+    class=="Urbain/Rural"& levels ==1 ~ "Urbian",
+    class=="Urbain/Rural"& levels ==2 ~ "Rural",
+    class=="Region"& levels ==1 ~ "Maritime",
+    class=="Region"& levels ==2 ~ "Plateaux",
+    class=="Region"& levels ==3 ~ "Centrale",
+    class=="Region"& levels ==4 ~ "Kara",
+    class=="Region"& levels ==5 ~ "Savanes",
+    class=="Region"& levels ==6 ~ "Lome-Comm",
+    class=="Region"& levels ==7 ~ "Golfe-Urbain",
+    class=="Richesse"& levels ==1 ~ "plus pauvres",
+    class=="Richesse"& levels ==2 ~ "Second",
+    class=="Richesse"& levels ==3 ~ "Moyen",
+    class=="Richesse"& levels ==4 ~ "Quatrième",
+    class=="Richesse"& levels ==5 ~ "plus riches",
+    class=="Genre"& levels ==1 ~ "Masculin",
+    class=="Genre"& levels ==2 ~ "Feminin",
+    
+  ))
+
+
+couverture |> 
+  select(-levels) |> 
+  relocate(class,etiquette,TBS_prim,TNS_prim,TNSA_prim,TBS_col,TNS_col,TNSA_col,TBS_lyc,TNS_lyc,TNSA_lyc) |> 
+  gt(groupname_col = 'class', rowname_col = 'etiquette') |> 
+  cols_label(
+    class = "Variable",
+    etiquette = "Modalités",
+    TBS_prim = 'TBS',
+    TNS_prim = "TNS",
+    TNSA_prim = "TNSA",
+    TBS_col = "TBS",
+    TNS_col = "TNS",
+    TNSA_col = "TNSA",
+    TBS_lyc = "TBS",
+    TNS_lyc = "TNS",
+    TNSA_lyc = "TNSA"
+      ) |> 
+   fmt_number(
+    columns = where(is.numeric),
+    decimals = 2
+  ) |> 
+  tab_spanner(
+    label = md('**Caractéristique**'),
+    columns = c('class','etiquette')
+  ) |>
+  tab_spanner(
+    label = md('**Primaire (%)**'),
+    columns = c('TBS_prim', 'TNS_prim','TNSA_prim')
+  ) |>
+  tab_spanner(
+    label = md('**Secondaire 1 (%)**'),
+    columns = c('TBS_col', 'TNS_col','TNSA_col')
+  ) |>
+  tab_spanner(
+    label = md('**Secondaire 2 (%)**'),
+    columns = c('TBS_lyc', 'TNS_lyc','TNSA_lyc')
+  ) |>
+    tab_header(
+      title = 'Les indicateurs de couverture: TBS et TNS',
+      subtitle = 'Calcul pour le primaire et le secondaire'
+    ) |> 
+  tab_options(
+    data_row.padding = px(2),
+    summary_row.padding = px(3), 
+    row_group.padding = px(4)    
+  ) |> 
+  tab_source_note(
+    source_note = md("SOURCE: MICS 2017 | Calcul de l'auteur<br>TABLE: Komlan Samati")) |> 
+  opt_stylize(style = 6, color = 'gray')
+
+  
+
+```
+
+### Les limites des taux de scolarisation 
+
+Les limites des taux de scolarisation sont de deux ordres:
+
+* Ces taux surestiment la scolarisation car prenant en compte les redoublement;
+* Ces taux prennent les entrées tardives (c'est le cas pour le taux brut de scolarisation)
+
+
+Pour mieux appréhender la scolarisation, on a recours au profil de scolarisation.
+
+## Analyse de la couverture scolaire
+
+
+
+:::{.callout-note appearance="simple"}
+
+## Méthodologie
+
+Le profil de scolarisation est la succession de taux d'accès aux différentes classes pour le cycle considéré. Le taux d'admission en première année constitue le point de départ du profil et le taux d'admission en dernière année la fin du profil. (NB: Ne pas confondre le taux d'admission en dernière année et le taux d'achèvement )
+
+Le taux d'accès TA pour une classe j, à une année t est égal au rapport de l'effectif des nouveaux entrants NE et la population ayant l'âge officiel de fréquenter cette classe j, l'année t
+
+$$
+TA_{i,t} = \frac{NE_{j,t}}{PA_{i,t}}
+$$
+
+:::
+
+
+### Imputation
+
+La démarche porte sur les étapes suivantes:
+
+- Numérateur par exemple pour le CP2, L'enfant est scolarisé au primaire en 2016-2017 (```ED10A == 1```), fréquente la classe de CP2 (```ED10B == 2```), qu'il soit nouveau dans la classe de CP2 (```ED16A == 1 & ED16B  == 1```, en d'autre terme, il était au CP1 l'année précédente);
+- Dénominateur pour le CP2, l'enfant doit être agé de 7 ans (```schage==11```)
+
+
+
+```{r}
+acces <-  function(niveauAn,classeAn,by){
+  if (classeAn < 2){
+    hl_design <- hl |> 
+      mutate(
+        NE= ifelse(ED10A == {{niveauAn}} & ED10B == {{classeAn}} , 1,0),
+        PA = if_else(schage == {{classeAn}}+5,1,0)
+      ) |>
+      as_survey_design(weights = hhweight) 
+      
+  } else{
+    hl_design <- hl |> 
+      mutate(
+        NE = ifelse(ED10A == {{niveauAn}} & ED10B == {{classeAn}} & ED16A == {{niveauAn}} & ED16B  == {{classeAn}}-1, 1,0),
+        PA = if_else(schage == {{classeAn}}+5,1,0)) |>
+      as_survey_design(weights = hhweight) 
+  }
+  
+ hl_design |>
+    group_by({{by}}) |> 
+    summarise(
+      "TA_{classeAn}" := survey_total(NE,na.rm = TRUE)/survey_total(PA,na.rm = TRUE)*100
+    ) |>
+   select(-contains("_se"),-1)  
+}
+
+prim_ens <- cbind(acces(1,1,0),acces(1,2,0),acces(1,3,0),acces(1,4,0),acces(1,5,0),acces(1,6,0)) |>
+  rownames_to_column("var") |> 
+  mutate(var = if_else(var == 1,"Nationale",var))
+  
+prim_genre <- cbind(acces(1,1,HL4),acces(1,2,HL4),acces(1,3,HL4),acces(1,4,HL4),acces(1,5,HL4),acces(1,6,HL4)) |> 
+  rownames_to_column("var") |> 
+  mutate(var = if_else(var == 1,"Masculin","Feminin"))
+
+profil <- data.table::transpose(rbind(prim_ens,prim_genre),keep.names = "Taux",make.names = "var")|>
+  mutate(Taux = case_when(
+    Taux == "TA_1" ~ "CP1",
+    Taux == "TA_2" ~ "CP2",
+    Taux == "TA_3" ~ "CE1",
+    Taux == "TA_4" ~ "CE2",
+    Taux == "TA_5" ~ "CM1",
+    Taux == "TA_6" ~ "CM2",
+  ))
+
+head(profil)
+
+```
+
+
+
+

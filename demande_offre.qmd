@@ -1,0 +1,9 @@
+# Offre et demande pour les questions d'accès
+
+{{< include _setup.qmd >}}
+
+In summary, this book has no content whatsoever.
+
+```{r}
+1 + 1
+```

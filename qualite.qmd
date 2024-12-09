@@ -1,0 +1,50 @@
+# Analyse de la qualité du système
+
+{{< include _setup.qmd >}}
+
+
+## Importation des données
+
+```{r}
+
+grd2 <- import(here("data/pasec/tg_grd2.dta")) |> as_tibble()
+
+grd6 <- import(here("data/pasec/tg_grd6.dta")) |> as_tibble()
+
+head(grd6)
+
+```
+
+
+
+
+
+
+```{r}
+grd2_design <- grd2 |> 
+  as_survey_design(weights = rwgt0)
+
+grd6_design <- grd6 |> 
+  as_survey_design(weights = rwgt0)
+
+
+grd2_design
+
+```
+
+
+
+
+
+
+```{r}
+grd2_design <- grd2 |> 
+  as_survey_rep(weights = rwgt0,repweights = rwgt1:rwgt45,type = "JK1",mse = TRUE,combined.weights = FALSE, scale = (45-1)/45)
+
+grd6_design <- grd6 |> 
+  as_survey_rep(weights = rwgt0,repweights = rwgt1:rwgt45,type = "JK1",mse = TRUE,combined.weights = FALSE, scale = (45-1)/45)
+
+
+
+```
+
