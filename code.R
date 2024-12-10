@@ -68,8 +68,6 @@ acces <-  function(niveauAn,classeAn,by){
       "TA_{classeAn}" := survey_total(NE,na.rm = TRUE)/survey_total(PA,na.rm = TRUE)*100
     ) |>
    select(-contains("_se"),-1)  
-   
-  
 }
 
 
@@ -83,17 +81,199 @@ prim_genre = cbind(acces(1,1,HL4),acces(1,2,HL4),acces(1,3,HL4),acces(1,4,HL4),a
   mutate(var = if_else(var == 1,"Masculin","Feminin"))
 
 
-df <- rbind(prim_ens,prim_genre) 
-profil <- data.table::transpose(df,keep.names = "Taux",make.names = "var") |> 
-  mutate(Taux = case_when(
-    Taux == "TA_1" ~ "CP1",
-    Taux == "TA_2" ~ "CP2",
-    Taux == "TA_3" ~ "CE1",
-    Taux == "TA_4" ~ "CE2",
-    Taux == "TA_5" ~ "CM1",
-    Taux == "TA_6" ~ "CM2",
+df_prim <- rbind(prim_ens,prim_genre) 
+profil_prim <- data.table::transpose(df_prim,keep.names = "Classe",make.names = "var") |> 
+  mutate(Classe = case_when(
+    Classe == "TA_1" ~ "CP1",
+    Classe == "TA_2" ~ "CP2",
+    Classe == "TA_3" ~ "CE1",
+    Classe == "TA_4" ~ "CE2",
+    Classe == "TA_5" ~ "CM1",
+    Classe == "TA_6" ~ "CM2",
   ))
-write.xlsx(profil,"profil.xlsx")
+
+sec1_ens <-  cbind(acces(2,1,0),acces(2,2,0),acces(2,3,0),acces(2,4,0)) |>
+  rownames_to_column("var") |> 
+  mutate(var = if_else(var == 1,"Nationale",var))
+
+sec1_genre <-  cbind(acces(2,1,HL4),acces(2,2,HL4),acces(2,3,HL4),acces(2,4,HL4)) |> 
+  rownames_to_column("var") |> 
+  mutate(var = if_else(var == 1,"Masculin","Feminin"))
+
+
+df_sec1 <- rbind(sec1_ens,sec1_genre) 
+profil_sec1 <- data.table::transpose(df_sec1,keep.names = "Classe",make.names = "var") |> 
+  mutate(Classe = case_when(
+    Classe == "TA_1" ~ "6ieme",
+    Classe == "TA_2" ~ "5ieme",
+    Classe == "TA_3" ~ "4ieme",
+    Classe == "TA_4" ~ "3ieme"
+  ))
+
+
+
+sec2_ens <-  cbind(acces(3,1,0),acces(3,2,0),acces(3,3,0)) |>
+  rownames_to_column("var") |> 
+  mutate(var = if_else(var == 1,"Nationale",var))
+
+sec2_genre <-  cbind(acces(3,1,HL4),acces(3,2,HL4),acces(3,3,HL4)) |> 
+  rownames_to_column("var") |> 
+  mutate(var = if_else(var == 1,"Masculin","Feminin"))
+
+
+df_sec2 <- rbind(sec2_ens,sec2_genre) 
+profil_sec2 <- data.table::transpose(df_sec2,keep.names = "Classe",make.names = "var") |> 
+  mutate(Classe = case_when(
+    Classe == "TA_1" ~ "2nde",
+    Classe == "TA_2" ~ "1ere",
+    Classe == "TA_3" ~ "Tle"
+  ))
+
+
+profil <- rbind(profil_prim,profil_sec1,profil_sec2) |> 
+  mutate(niveau = case_when(
+    Classe %in% c("CP1","CP2","CE1","CE2","CM1","CM2") ~ "Primaire",
+    Classe %in% c("6ieme","5ieme","4ieme","3ieme") ~ "College",
+    Classe %in% c("2nde","1ere","Tle") ~ "Lycée"
+  ), x = 1:13)
+
+library(patchwork)
+col_palette  <- paletteer::paletteer_d("nbapalettes::mavericks_retro")
+profil |>
+  mutate(Classe = fct_reorder(Classe, x)) |> 
+  ggplot() +
+  geom_point(aes(x = x,y = Nationale),size = 1.5,color = "#787878FF") +
+  geom_line(aes(x = x,y = Nationale,colour = "#787878FF"),linewidth = 1) +
+  geom_point(aes(x = x, y = Feminin),size = 1.5) +
+  geom_line(aes(x = x, y = Feminin,colour = "#803342FF"),linewidth = 1) +
+  geom_point(aes(x = x,y = Masculin),size = 1.5) +
+  geom_line(aes(x = x,y = Masculin, colour = "#417839FF"),linewidth = 1) +
+  geom_vline(xintercept = 6, linetype = "dotted", color = "#088BBEFF", size = 1) +
+  geom_vline(xintercept = 10, linetype = "dotted", color = "#1BB6AFFF", size = 1) +
+  scale_y_continuous(
+    breaks = seq(10, 130, by = 20),
+    limits = c(10, 130)
+  ) +
+  scale_x_continuous(
+    breaks = seq(1, 13, by = 1),
+    limits = c(1, 13),
+    labels = c("CP1","CP2","CE1","CE2","CM1","CM2","6ieme","5ieme","4ieme","3ieme","2nde","1ere","Tle")
+  ) +
+  #scale_colour_manual(name = "Genre",values = col_palette,labels = c("Masculin", "National", "Feminin")) +
+  scale_colour_manual(name = "Genre",values = c("#417839FF","#787878FF","#803342FF"),labels = c("Masculin", "National", "Feminin")) +
+  labs(
+    x = NULL,
+    y = NULL#,
+    #title = title_text,
+    #subtitle = subtitle_text,
+    #caption = caption_text,
+  ) +
+  theme_minimal()
+
+
+p1 <- profil |>
+  filter(niveau == "Primaire") |> 
+  mutate(Classe = fct_reorder(Classe, x)) |> 
+  ggplot() +
+  geom_point(aes(x = x,y = Nationale),size = 1.5,color = "#787878FF") +
+  geom_line(aes(x = x,y = Nationale,color = "#787878FF"),linewidth = 1) +
+  geom_point(aes(x = x, y = Feminin),size = 1.5,color = "#903030FF") +
+  geom_line(aes(x = x, y = Feminin,color = "#903030FF"),linewidth = 1) +
+  geom_point(aes(x = x,y = Masculin),size = 1.5,color = "#172869FF") +
+  geom_line(aes(x = x,y = Masculin,color = "#172869FF"),linewidth = 1) +
+  scale_y_continuous(
+    breaks = seq(10, 130, by = 20),
+    limits = c(10, 130)
+  ) +
+  scale_x_continuous(
+    breaks = seq(1, 6, by = 1),
+    limits = c(1, 6),
+    labels = c("CP1","CP2","CE1","CE2","CM1","CM2")
+  ) +
+  # coord_cartesian(clip = "off") +
+  labs(
+    x = NULL,
+    y = NULL#,
+    #title = title_text,
+    #subtitle = subtitle_text,
+    #caption = caption_text,
+  ) +
+  theme_minimal() 
+
+p2 <- profil |>
+  filter(niveau == "College") |> 
+  mutate(Classe = fct_reorder(Classe, x)) |> 
+  ggplot() +
+  geom_point(aes(x = x,y = Nationale),size = 1.5,color = "#787878FF") +
+  geom_line(aes(x = x,y = Nationale,color = "#787878FF"),linewidth = 1) +
+  geom_point(aes(x = x, y = Feminin),size = 1.5,color = "#903030FF") +
+  geom_line(aes(x = x, y = Feminin,color = "#903030FF"),linewidth = 1) +
+  geom_point(aes(x = x,y = Masculin),size = 1.5,color = "#172869FF") +
+  geom_line(aes(x = x,y = Masculin,color = "#172869FF"),linewidth = 1) +
+  scale_y_continuous(
+    breaks = seq(10, 130, by = 20),
+    limits = c(10, 130)
+  ) +
+  scale_x_continuous(
+    breaks = seq(7, 10, by = 1),
+    limits = c(7, 10),
+    labels = c("6ieme","5ieme","4ieme","3ieme")
+  ) +
+ # coord_cartesian(clip = "off") +
+  labs(
+    x = NULL,
+    y = NULL#,
+    #title = title_text,
+    #subtitle = subtitle_text,
+    #caption = caption_text,
+  ) +
+  theme_minimal()
+
+p3 <- profil |>
+  filter(niveau == "Lycée") |> 
+  mutate(Classe = fct_reorder(Classe, x)) |> 
+  ggplot() +
+  geom_point(aes(x = x,y = Nationale),size = 1.5,color = "#787878FF") +
+  geom_line(aes(x = x,y = Nationale,color = "#787878FF"),linewidth = 1) +
+  geom_point(aes(x = x, y = Feminin),size = 1.5,color = "#903030FF") +
+  geom_line(aes(x = x, y = Feminin,color = "#903030FF"),linewidth = 1) +
+  geom_point(aes(x = x,y = Masculin),size = 1.5,color = "#172869FF") +
+  geom_line(aes(x = x,y = Masculin,color = "#172869FF"),linewidth = 1) +
+  scale_y_continuous(
+    breaks = seq(10, 130, by = 20),
+    limits = c(10, 130)
+  ) +
+  scale_x_continuous(
+    breaks = seq(11, 13, by = 1),
+    limits = c(11, 13),
+    labels = c("2nde","1ere","Tle")
+  ) +
+ # coord_cartesian(clip = "off") +
+  labs(
+    x = NULL,
+    y = NULL#,
+    #title = title_text,
+    #subtitle = subtitle_text,
+    #caption = caption_text,
+  ) +
+  theme_minimal()
+
+p1 + p2 + p3 + plot_layout(widths = c(2,1.5,1),axes = "collect", guides = "collect") & theme(legend.position = "top")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 indic1 <- hl_design |>
   group_by(HH6) |> 

@@ -233,6 +233,12 @@ window.Quarto = {
  <span class="menu-text">References</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./oosc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Les enfants hors du système scolaire</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -247,7 +253,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./depense_menage.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Analyse des depenses des menages</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Analyse des depenses des menages</span></span></a>
   </div>
 </li>
       </ul>
@@ -264,7 +270,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./analyse_qualite.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Analyse de la qualité du système</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Analyse de la qualité du système</span></span></a>
   </div>
 </li>
       </ul>
@@ -281,7 +287,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./efficacite_externe_systeme.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Analyse de l’efficacité externe du systeme</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Analyse de l’efficacité externe du systeme</span></span></a>
   </div>
 </li>
       </ul>
@@ -298,7 +304,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./equite_systeme.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Analyse de l’équite dans le systeme</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Analyse de l’équite dans le systeme</span></span></a>
   </div>
 </li>
       </ul>
@@ -1197,6 +1203,23 @@ TNSA = \frac{ESASA}{PAS}
 </div>
 </div>
 </div>
+<p>Les tableaux ne sont pas généralement assez informatifs. Il est important de faire des représentation graphiques pour faire ressortir les resultats les plus importants. Par exemple pour ce tableau, on pourrait un graphique qui compare les taux net de scolarisation entre les différentes régions.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capacite_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capacite_files/figure-html/unnamed-chunk-4-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="les-limites-des-taux-de-scolarisation" class="level3" data-number="1.1.5">
 <h3 data-number="1.1.5" class="anchored" data-anchor-id="les-limites-des-taux-de-scolarisation"><span class="header-section-number">1.1.5</span> Les limites des taux de scolarisation</h3>
@@ -1260,32 +1283,71 @@ TA_{i,t} = \frac{NE_{j,t}}{PA_{i,t}}
 <span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>   <span class="fu">select</span>(<span class="sc">-</span><span class="fu">contains</span>(<span class="st">"_se"</span>),<span class="sc">-</span><span class="dv">1</span>)  </span>
 <span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>prim_ens <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="fu">acces</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>),<span class="fu">acces</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">0</span>),<span class="fu">acces</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">0</span>),<span class="fu">acces</span>(<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">0</span>),<span class="fu">acces</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">0</span>),<span class="fu">acces</span>(<span class="dv">1</span>,<span class="dv">6</span>,<span class="dv">0</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames_to_column</span>(<span class="st">"var"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">var =</span> <span class="fu">if_else</span>(var <span class="sc">==</span> <span class="dv">1</span>,<span class="st">"Nationale"</span>,var))</span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>prim_genre <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="fu">acces</span>(<span class="dv">1</span>,<span class="dv">1</span>,HL4),<span class="fu">acces</span>(<span class="dv">1</span>,<span class="dv">2</span>,HL4),<span class="fu">acces</span>(<span class="dv">1</span>,<span class="dv">3</span>,HL4),<span class="fu">acces</span>(<span class="dv">1</span>,<span class="dv">4</span>,HL4),<span class="fu">acces</span>(<span class="dv">1</span>,<span class="dv">5</span>,HL4),<span class="fu">acces</span>(<span class="dv">1</span>,<span class="dv">6</span>,HL4)) <span class="sc">|&gt;</span> </span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames_to_column</span>(<span class="st">"var"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">var =</span> <span class="fu">if_else</span>(var <span class="sc">==</span> <span class="dv">1</span>,<span class="st">"Masculin"</span>,<span class="st">"Feminin"</span>))</span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>profil <span class="ot">&lt;-</span> data.table<span class="sc">::</span><span class="fu">transpose</span>(<span class="fu">rbind</span>(prim_ens,prim_genre),<span class="at">keep.names =</span> <span class="st">"Taux"</span>,<span class="at">make.names =</span> <span class="st">"var"</span>)<span class="sc">|&gt;</span></span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Taux =</span> <span class="fu">case_when</span>(</span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    Taux <span class="sc">==</span> <span class="st">"TA_1"</span> <span class="sc">~</span> <span class="st">"CP1"</span>,</span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    Taux <span class="sc">==</span> <span class="st">"TA_2"</span> <span class="sc">~</span> <span class="st">"CP2"</span>,</span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    Taux <span class="sc">==</span> <span class="st">"TA_3"</span> <span class="sc">~</span> <span class="st">"CE1"</span>,</span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    Taux <span class="sc">==</span> <span class="st">"TA_4"</span> <span class="sc">~</span> <span class="st">"CE2"</span>,</span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    Taux <span class="sc">==</span> <span class="st">"TA_5"</span> <span class="sc">~</span> <span class="st">"CM1"</span>,</span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    Taux <span class="sc">==</span> <span class="st">"TA_6"</span> <span class="sc">~</span> <span class="st">"CM2"</span>,</span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>  ))</span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(profil)</span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Taux Nationale  Masculin   Feminin</span></span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1  CP1 121.57726 128.46167 114.96745</span></span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2  CP2 122.08627 128.13226 116.04922</span></span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3  CE1 104.90994  98.24681 112.84479</span></span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4  CE2  99.44824 102.72742  96.25296</span></span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5  CM1 104.69875  94.13205 117.00142</span></span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6  CM2  92.37894  93.75011  91.05140</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>prim_ens <span class="ot">=</span> <span class="fu">cbind</span>(<span class="fu">acces</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>),<span class="fu">acces</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">0</span>),<span class="fu">acces</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">0</span>),<span class="fu">acces</span>(<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">0</span>),<span class="fu">acces</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">0</span>),<span class="fu">acces</span>(<span class="dv">1</span>,<span class="dv">6</span>,<span class="dv">0</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames_to_column</span>(<span class="st">"var"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">var =</span> <span class="fu">if_else</span>(var <span class="sc">==</span> <span class="dv">1</span>,<span class="st">"Nationale"</span>,var))</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>prim_genre <span class="ot">=</span> <span class="fu">cbind</span>(<span class="fu">acces</span>(<span class="dv">1</span>,<span class="dv">1</span>,HL4),<span class="fu">acces</span>(<span class="dv">1</span>,<span class="dv">2</span>,HL4),<span class="fu">acces</span>(<span class="dv">1</span>,<span class="dv">3</span>,HL4),<span class="fu">acces</span>(<span class="dv">1</span>,<span class="dv">4</span>,HL4),<span class="fu">acces</span>(<span class="dv">1</span>,<span class="dv">5</span>,HL4),<span class="fu">acces</span>(<span class="dv">1</span>,<span class="dv">6</span>,HL4)) <span class="sc">|&gt;</span> </span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames_to_column</span>(<span class="st">"var"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">var =</span> <span class="fu">if_else</span>(var <span class="sc">==</span> <span class="dv">1</span>,<span class="st">"Masculin"</span>,<span class="st">"Feminin"</span>))</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>df_prim <span class="ot">&lt;-</span> <span class="fu">rbind</span>(prim_ens,prim_genre) </span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>profil_prim <span class="ot">&lt;-</span> data.table<span class="sc">::</span><span class="fu">transpose</span>(df_prim,<span class="at">keep.names =</span> <span class="st">"Classe"</span>,<span class="at">make.names =</span> <span class="st">"var"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Classe =</span> <span class="fu">case_when</span>(</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    Classe <span class="sc">==</span> <span class="st">"TA_1"</span> <span class="sc">~</span> <span class="st">"CP1"</span>,</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    Classe <span class="sc">==</span> <span class="st">"TA_2"</span> <span class="sc">~</span> <span class="st">"CP2"</span>,</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>    Classe <span class="sc">==</span> <span class="st">"TA_3"</span> <span class="sc">~</span> <span class="st">"CE1"</span>,</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>    Classe <span class="sc">==</span> <span class="st">"TA_4"</span> <span class="sc">~</span> <span class="st">"CE2"</span>,</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    Classe <span class="sc">==</span> <span class="st">"TA_5"</span> <span class="sc">~</span> <span class="st">"CM1"</span>,</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>    Classe <span class="sc">==</span> <span class="st">"TA_6"</span> <span class="sc">~</span> <span class="st">"CM2"</span>,</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>sec1_ens <span class="ot">&lt;-</span>  <span class="fu">cbind</span>(<span class="fu">acces</span>(<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">0</span>),<span class="fu">acces</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">0</span>),<span class="fu">acces</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">0</span>),<span class="fu">acces</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">0</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames_to_column</span>(<span class="st">"var"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">var =</span> <span class="fu">if_else</span>(var <span class="sc">==</span> <span class="dv">1</span>,<span class="st">"Nationale"</span>,var))</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>sec1_genre <span class="ot">&lt;-</span>  <span class="fu">cbind</span>(<span class="fu">acces</span>(<span class="dv">2</span>,<span class="dv">1</span>,HL4),<span class="fu">acces</span>(<span class="dv">2</span>,<span class="dv">2</span>,HL4),<span class="fu">acces</span>(<span class="dv">2</span>,<span class="dv">3</span>,HL4),<span class="fu">acces</span>(<span class="dv">2</span>,<span class="dv">4</span>,HL4)) <span class="sc">|&gt;</span> </span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames_to_column</span>(<span class="st">"var"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">var =</span> <span class="fu">if_else</span>(var <span class="sc">==</span> <span class="dv">1</span>,<span class="st">"Masculin"</span>,<span class="st">"Feminin"</span>))</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>df_sec1 <span class="ot">&lt;-</span> <span class="fu">rbind</span>(sec1_ens,sec1_genre) </span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>profil_sec1 <span class="ot">&lt;-</span> data.table<span class="sc">::</span><span class="fu">transpose</span>(df_sec1,<span class="at">keep.names =</span> <span class="st">"Classe"</span>,<span class="at">make.names =</span> <span class="st">"var"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Classe =</span> <span class="fu">case_when</span>(</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>    Classe <span class="sc">==</span> <span class="st">"TA_1"</span> <span class="sc">~</span> <span class="st">"6ieme"</span>,</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>    Classe <span class="sc">==</span> <span class="st">"TA_2"</span> <span class="sc">~</span> <span class="st">"5ieme"</span>,</span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>    Classe <span class="sc">==</span> <span class="st">"TA_3"</span> <span class="sc">~</span> <span class="st">"4ieme"</span>,</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>    Classe <span class="sc">==</span> <span class="st">"TA_4"</span> <span class="sc">~</span> <span class="st">"3ieme"</span></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>sec2_ens <span class="ot">&lt;-</span>  <span class="fu">cbind</span>(<span class="fu">acces</span>(<span class="dv">3</span>,<span class="dv">1</span>,<span class="dv">0</span>),<span class="fu">acces</span>(<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">0</span>),<span class="fu">acces</span>(<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">0</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames_to_column</span>(<span class="st">"var"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">var =</span> <span class="fu">if_else</span>(var <span class="sc">==</span> <span class="dv">1</span>,<span class="st">"Nationale"</span>,var))</span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>sec2_genre <span class="ot">&lt;-</span>  <span class="fu">cbind</span>(<span class="fu">acces</span>(<span class="dv">3</span>,<span class="dv">1</span>,HL4),<span class="fu">acces</span>(<span class="dv">3</span>,<span class="dv">2</span>,HL4),<span class="fu">acces</span>(<span class="dv">3</span>,<span class="dv">3</span>,HL4)) <span class="sc">|&gt;</span> </span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames_to_column</span>(<span class="st">"var"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">var =</span> <span class="fu">if_else</span>(var <span class="sc">==</span> <span class="dv">1</span>,<span class="st">"Masculin"</span>,<span class="st">"Feminin"</span>))</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>df_sec2 <span class="ot">&lt;-</span> <span class="fu">rbind</span>(sec2_ens,sec2_genre) </span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>profil_sec2 <span class="ot">&lt;-</span> data.table<span class="sc">::</span><span class="fu">transpose</span>(df_sec2,<span class="at">keep.names =</span> <span class="st">"Classe"</span>,<span class="at">make.names =</span> <span class="st">"var"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Classe =</span> <span class="fu">case_when</span>(</span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>    Classe <span class="sc">==</span> <span class="st">"TA_1"</span> <span class="sc">~</span> <span class="st">"2nde"</span>,</span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>    Classe <span class="sc">==</span> <span class="st">"TA_2"</span> <span class="sc">~</span> <span class="st">"1ere"</span>,</span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>    Classe <span class="sc">==</span> <span class="st">"TA_3"</span> <span class="sc">~</span> <span class="st">"Tle"</span></span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>  ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Une manière de mieux appréhender les profils de scolarisation est d’en faire une représentation graphique.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="capacite_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
 </div>
 
 

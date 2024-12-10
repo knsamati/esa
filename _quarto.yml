@@ -26,6 +26,7 @@ book:
        - demande_offre.qmd
        - efficacite_interne.qmd
        - references.qmd
+       - oosc.qmd
     - part: depense.qmd
       chapters:
        - depense_menage.qmd
