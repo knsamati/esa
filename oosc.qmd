@@ -2,9 +2,19 @@
 
 In summary, this book has no content whatsoever.
 
-```{r}
-1 + 1
-```
+{{< include _setup.qmd >}}
+
+:::{.callout-note appearance="simple"}
+
+## Méthodologie
+
+### 1. Le taux brut de scolarisation
+
+En notant ```ES``` (respectivement ```PAS``` ) l’effectif des élèves scolarisés (respectivement la population d'enfant d’âge scolaire), on définit le Taux brut de scolarisation (```TBS```) sur un cycle particulier pour une année donnée par:
+
+$$
+TBS = \frac{ES}{PAS}
+$$
 
 
-
+:::

@@ -168,7 +168,10 @@ profil |>
     #subtitle = subtitle_text,
     #caption = caption_text,
   ) +
-  theme_minimal()
+  theme_minimal() +
+  theme(
+    legend.position = c(0.9, 0.9)
+  )
 
 
 p1 <- profil |>
@@ -190,15 +193,12 @@ p1 <- profil |>
     limits = c(1, 6),
     labels = c("CP1","CP2","CE1","CE2","CM1","CM2")
   ) +
-  # coord_cartesian(clip = "off") +
+  scale_colour_manual(name = "Genre",values = c("#417839FF","#787878FF","#803342FF"),labels = c("Masculin", "National", "Feminin")) +
   labs(
     x = NULL,
-    y = NULL#,
-    #title = title_text,
-    #subtitle = subtitle_text,
-    #caption = caption_text,
+    y = NULL
   ) +
-  theme_minimal() 
+  theme_minimal()
 
 p2 <- profil |>
   filter(niveau == "College") |> 
@@ -219,13 +219,10 @@ p2 <- profil |>
     limits = c(7, 10),
     labels = c("6ieme","5ieme","4ieme","3ieme")
   ) +
- # coord_cartesian(clip = "off") +
+  scale_colour_manual(name = "Genre",values = c("#417839FF","#787878FF","#803342FF"),labels = c("Masculin", "National", "Feminin")) +
   labs(
     x = NULL,
-    y = NULL#,
-    #title = title_text,
-    #subtitle = subtitle_text,
-    #caption = caption_text,
+    y = NULL
   ) +
   theme_minimal()
 
@@ -248,47 +245,15 @@ p3 <- profil |>
     limits = c(11, 13),
     labels = c("2nde","1ere","Tle")
   ) +
- # coord_cartesian(clip = "off") +
+  scale_colour_manual(name = "Genre",values = c("#417839FF","#787878FF","#803342FF"),labels = c("Masculin", "National", "Feminin")) +
   labs(
     x = NULL,
-    y = NULL#,
-    #title = title_text,
-    #subtitle = subtitle_text,
-    #caption = caption_text,
+    y = NULL
   ) +
   theme_minimal()
 
-p1 + p2 + p3 + plot_layout(widths = c(2,1.5,1),axes = "collect", guides = "collect") & theme(legend.position = "top")
+p1 + p2 + p3 + plot_layout(widths = c(2,1.5,1),axes = "collect", guides = "collect") & theme(legend.position = "top") 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-indic1 <- hl_design |>
-  group_by(HH6) |> 
-  summarise(
-    TBS_prim = survey_total(ES_prim,na.rm = TRUE)/survey_total(PAS_prim,na.rm = TRUE)*100,
-    TNS_prim = survey_total(ESAS_prim,na.rm = TRUE)/survey_total(PAS_prim,na.rm = TRUE)*100,
-    TNSA_prim = survey_total(ESASA_prim,na.rm = TRUE)/survey_total(PAS_prim,na.rm = TRUE)*100,
-    TBS_sec1 = survey_total(ES_sec1,na.rm = TRUE)/survey_total(PAS_sec1,na.rm = TRUE)*100,
-    TNS_sec1 = survey_total(ESAS_sec1,na.rm = TRUE)/survey_total(PAS_sec1,na.rm = TRUE)*100,
-    TNSA_sec1 = survey_total(ESASA_sec1,na.rm = TRUE)/survey_total(PAS_sec1,na.rm = TRUE)*100,
-    TBS_sec2 = survey_total(ES_sec2,na.rm = TRUE)/survey_total(PAS_sec2,na.rm = TRUE)*100,
-    TNS_sec2 = survey_total(ESAS_sec2,na.rm = TRUE)/survey_total(PAS_sec2,na.rm = TRUE)*100,
-    TNSA_sec2 = survey_total(ESASA_sec2,na.rm = TRUE)/survey_total(PAS_sec2,na.rm = TRUE)*100) |>
-  mutate(class = "urban/rural",levels = HH6) |> 
-  select(TBS_prim,TNS_prim,TNSA_prim,TBS_sec1,TNS_sec1,TNSA_sec1,TBS_sec2,TNS_sec2,TNSA_sec2,class,levels)
 
 
 hl <- hl |>
@@ -379,26 +344,95 @@ indic_sec2 = rbind(indic30,indic31,indic32,indic33,indic34)
 df <- cbind(indic_prim |> select(-c(class,levels)),indic_sec1 |> select(-c(class,levels)),indic_sec2)
 
 
+couverture <- df |> 
+  mutate(etiquette = case_when(
+    class=="National" & levels ==0 ~ "Togo",
+    class=="Urbain/Rural"& levels ==1 ~ "Urbian",
+    class=="Urbain/Rural"& levels ==2 ~ "Rural",
+    class=="Region"& levels ==1 ~ "Maritime",
+    class=="Region"& levels ==2 ~ "Plateaux",
+    class=="Region"& levels ==3 ~ "Centrale",
+    class=="Region"& levels ==4 ~ "Kara",
+    class=="Region"& levels ==5 ~ "Savanes",
+    class=="Region"& levels ==6 ~ "Lome-Comm",
+    class=="Region"& levels ==7 ~ "Golfe-Urbain",
+    class=="Richesse"& levels ==1 ~ "plus pauvres",
+    class=="Richesse"& levels ==2 ~ "Second",
+    class=="Richesse"& levels ==3 ~ "Moyen",
+    class=="Richesse"& levels ==4 ~ "Quatrième",
+    class=="Richesse"& levels ==5 ~ "plus riches",
+    class=="Genre"& levels ==1 ~ "Masculin",
+    class=="Genre"& levels ==2 ~ "Feminin",
+    
+  ))
 
-DT = data.table::data.table(x=1:3, y=c("a","b","c"))
-data.table::transpose(DT, list.cols=FALSE)
+
+df <- couverture |> 
+  filter(class == "Region"| class == "National" ) |> 
+  select(TNS_lyc,etiquette) |> 
+  mutate(Togo = ifelse(etiquette == "Togo",TRUE,FALSE)) |> 
+  mutate(etiquette = fct_reorder(etiquette, TNS_lyc)) 
+
+  ggplot(df,aes(x = etiquette,y = TNS_lyc,fill = Togo))+
+  geom_col(show.legend = FALSE) +
+  scale_fill_manual(name = NULL, values = c("#787878FF", "#00B0F0"),labels(c("Fille","Garçon"))) +
+  geom_text(
+    data = df,
+    mapping = aes(x = etiquette, y = TNS_lyc, label = round(TNS_lyc,2)),
+    hjust = 1,
+    nudge_x = -0.1,
+    color = 'white',
+    fontface = 'bold',
+    size = 4.5
+  ) +
+  coord_flip() +
+  theme_minimal() +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text = element_text(size = 8.5),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.major.y = element_blank(),
+        #panel.grid.minor.x = element_blank(),
+        panel.grid.major.x = element_blank()
+  )
 
 
+  
+TNS_lyc <-  hl_design |>
+    group_by(HH7,HL4) |> 
+    summarise(
+      TNS = survey_total(ESAS_col,na.rm = TRUE)/survey_total(PAS_col,na.rm = TRUE)*100
+    ) |> 
+    select(HH7,HL4,TNS)  |> 
+    mutate(
+      HH7 = case_when(
+      HH7 == 1 ~ "Maritime",
+      HH7 == 2 ~ "Plateaux",
+      HH7 == 3 ~ "Centrale",
+      HH7 == 4 ~ "Kara",
+      HH7 == 5 ~ "Savanes",
+      HH7 == 6 ~ "Lome-Comm",
+      HH7 == 7 ~ "Golfe-Urbain"),
+      HL4 = case_when(
+      HL4 == 1 ~ "Masculin",
+      HL4 == 2 ~ "Feminin")
+    ) |> 
+  mutate(
+    HH7 = fct_reorder(HH7,TNS)
+  )
+  
+    
+  
 
-grd2 <- import(here("data/pasec/PASEC2019_GRADE2.dta")) |> 
-  clean_names() |> 
-  filter(pays == 'TOGO') 
-
-export(grd2, "data/pasec/tg_grd2.dta")
-
-grd6 <- import(here("data/pasec/PASEC2019_GRADE6.dta")) |> 
-  clean_names() |> 
-  filter(pays == 'TOGO') 
-
-export(grd6, "data/pasec/tg_grd6.dta")
-
-
-
-
+ggplot(TNS_lyc, aes(x = TNS, y = HH7)) +
+  geom_line() +
+  geom_point(aes(color = HL4),size = 3,show.legend = FALSE) +
+  scale_color_manual(name = NULL, values = c("#33658A", "#00B0F0")) +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text = element_text(size = 8.5)
+  )
 
 
