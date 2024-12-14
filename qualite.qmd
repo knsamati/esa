@@ -7,11 +7,9 @@
 
 ```{r}
 
-grd2 <- import(here("data/pasec/tg_grd2.dta")) |> as_tibble()
+grd2 <- import(here("data/pasec/tg_grd2.dta")) |> clean_names() |> as_tibble()
 
-grd6 <- import(here("data/pasec/tg_grd6.dta")) |> as_tibble()
-
-head(grd6)
+grd6 <- import(here("data/pasec/tg_grd6.dta")) |> clean_names() |> as_tibble()
 
 ```
 
@@ -24,11 +22,28 @@ head(grd6)
 grd2_design <- grd2 |> 
   as_survey_design(weights = rwgt0)
 
+grd2_design <- grd2_design |> 
+  mutate(lng2 = (lect_pv1 + lect_pv2 + lect_pv3 + lect_pv4 + lect_pv5)/5,
+         math2 = (maths_pv1 + maths_pv2 + maths_pv3 + maths_pv4 + maths_pv5)/5) 
+
+grd2_design |> 
+  group_by(id_strate) |> 
+  summarise(sc_lng2 = survey_mean(lng2),
+            sc_math2 =survey_mean(math2))
+
+
 grd6_design <- grd6 |> 
   as_survey_design(weights = rwgt0)
 
+grd6_design <- grd6_design |> 
+  mutate(lng6 = (lect_pv1 + lect_pv2 + lect_pv3 + lect_pv4 + lect_pv5)/5,
+         math6 = (maths_pv1 + maths_pv2 + maths_pv3 + maths_pv4 + maths_pv5)/5)
 
-grd2_design
+grd6_design |> 
+  group_by(id_strate) |> 
+  summarise(sc_lng6 = survey_mean(lng6),
+            sc_math6 = survey_mean(math6))
+
 
 ```
 
@@ -38,12 +53,61 @@ grd2_design
 
 
 ```{r}
-grd2_design <- grd2 |> 
-  as_survey_rep(weights = rwgt0,repweights = rwgt1:rwgt45,type = "JK1",mse = TRUE,combined.weights = FALSE, scale = (45-1)/45)
 
-grd6_design <- grd6 |> 
-  as_survey_rep(weights = rwgt0,repweights = rwgt1:rwgt45,type = "JK1",mse = TRUE,combined.weights = FALSE, scale = (45-1)/45)
+grd2_rep <- grd2 |> 
+  as_survey_rep(weights = rwgt0,repweights = rwgt1:rwgt45,type = "JK1",mse = TRUE,combined.weights = TRUE, scale = (45-1)/45) |> 
+  mutate(lng2 = (lect_pv1 + lect_pv2 + lect_pv3 + lect_pv4 + lect_pv5)/5,
+         math2 = (maths_pv1 + maths_pv2 + maths_pv3 + maths_pv4 + maths_pv5)/5)
 
+grd2_rep |> 
+  mutate(niveau = case_when(
+    lng2 <= 399.12 ~ "Ss_Niveau_1",
+    lng2 > 399.12 & lng2 <= 469.54 ~ "Niveau_1",
+    lng2 > 469.54 & lng2 <= 539.96 ~ "Niveau_2",
+    lng2 > 539.96 & lng2 <= 610.38 ~ "Niveau_3",
+    lng2 > 610.38 ~ "Niveau_4",
+    TRUE ~ NA_character_)) |> 
+  group_by(niveau) |> 
+  summarise(p = survey_mean())
+
+grd2_rep |> 
+  mutate(niveau = case_when(
+    math2 < 400 ~ "Ss_Niveau_1",
+    math2 >= 400 & math2 < 489 ~ "Niveau_1",
+    math2 >= 489 & math2 < 577 ~ "Niveau_2",
+    math2 >= 577 ~ "Niveau_3",
+    TRUE ~ NA_character_)) |> 
+  group_by(niveau) |> 
+  summarise(p = survey_mean())
+
+
+grd6_rep <- grd6 |> 
+  as_survey_rep(weights = rwgt0,repweights = rwgt1:rwgt90,type = "JK1",mse = TRUE,combined.weights = FALSE, scale = (45-1)/45) |> 
+  mutate(lng6 = (lect_pv1 + lect_pv2 + lect_pv3 + lect_pv4 + lect_pv5)/5,
+         math6 = (maths_pv1 + maths_pv2 + maths_pv3 + maths_pv4 + maths_pv5)/5)
+
+
+grd6_rep |> 
+  mutate(niveau = case_when(
+    lng6 < 365.01 ~ "Ss_Niveau_1",
+    lng6 > 365.01 & lng6 <= 441.69 ~ "Niveau_1",
+    lng6 > 441.69 & lng6 <= 518.37 ~ "Niveau_2",
+    lng6 > 518.37 & lng6 <= 595.05 ~ "Niveau_3",
+    lng6 > 595.05 ~ "Niveau_4",
+    TRUE ~ NA_character_)) |> 
+  group_by(niveau) |> 
+  summarise(p = survey_mean())
+
+
+grd6_rep |> 
+  mutate(niveau = case_when(
+    math6 < 433 ~ "Ss_Niveau_1",
+    math6 >= 433 & math6 < 521 ~ "Niveau_1",
+    math6 >= 521 & math6 < 609 ~ "Niveau_2",
+    math6 >= 609 ~ "Niveau_3",
+    TRUE ~ NA_character_)) |> 
+  group_by(niveau) |> 
+  summarise(p = survey_mean()) 
 
 
 ```
