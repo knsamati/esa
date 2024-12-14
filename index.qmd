@@ -1,5 +1,5 @@
 
-[![Un éléphant](cover.png)]{width=60%}(Un éléphant)
+[![Un éléphant](cover_unicef.jpg)]{width=100%}(photo prise sur la page facebook de @unicef_togo)
 
 # Preface {.unnumbered}
 
