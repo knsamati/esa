@@ -25,14 +25,16 @@ book:
        - capacite.qmd
        - demande_offre.qmd
        - efficacite_interne.qmd
-       - references.qmd
        - oosc.qmd
+       - references.qmd
+
+    - part: analyse_qualite.qmd
+      chapters:
+       - qualite.qmd
     - part: depense.qmd
       chapters:
        - depense_menage.qmd
-    - part: qualite.qmd
-      chapters:
-       - analyse_qualite.qmd
+
     - part: efficacite_externe.qmd
       chapters:
        - efficacite_externe_systeme.qmd
