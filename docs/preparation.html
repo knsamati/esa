@@ -354,11 +354,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="importation-des-données">Importation des données</h2>
 <p>Les bases sont importées avec la fonction <code>here ()</code> pour spécifier l’emplacement des bases de données qui sont dans le dossier <code>data</code> et <code>import</code> du package <code>rio</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>hl <span class="ot">&lt;-</span> <span class="fu">import</span>(<span class="fu">here</span>(<span class="st">"data/mics/hl.sav"</span>)) <span class="sc">|&gt;</span> <span class="fu">as_tibble</span>() <span class="co"># Importation de la base hl</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>wm <span class="ot">&lt;-</span> <span class="fu">import</span>(<span class="fu">here</span>(<span class="st">"data/mics/wm.sav"</span>)) <span class="sc">|&gt;</span> <span class="fu">as_tibble</span>() <span class="co"># Importation de la base wm</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>mn <span class="ot">&lt;-</span> <span class="fu">import</span>(<span class="fu">here</span>(<span class="st">"data/mics/mn.sav"</span>)) <span class="sc">|&gt;</span> <span class="fu">as_tibble</span>() <span class="co"># Importation de la base mn</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>fs <span class="ot">&lt;-</span> <span class="fu">import</span>(<span class="fu">here</span>(<span class="st">"data/mics/fs.sav"</span>)) <span class="sc">|&gt;</span> <span class="fu">as_tibble</span>() <span class="co"># Importation de la base fs</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>ch <span class="ot">&lt;-</span> <span class="fu">import</span>(<span class="fu">here</span>(<span class="st">"data/mics/ch.sav"</span>)) <span class="sc">|&gt;</span> <span class="fu">as_tibble</span>() <span class="co"># Importation de la base ch</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>hl <span class="ot">&lt;-</span> <span class="fu">import</span>(<span class="fu">here</span>(<span class="st">"data/mics/hl.sav"</span>)) <span class="sc">|&gt;</span> <span class="fu">clean_names</span>() <span class="sc">|&gt;</span> <span class="fu">as_tibble</span>() <span class="co"># Importation de la base hl</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>wm <span class="ot">&lt;-</span> <span class="fu">import</span>(<span class="fu">here</span>(<span class="st">"data/mics/wm.sav"</span>)) <span class="sc">|&gt;</span> <span class="fu">clean_names</span>() <span class="sc">|&gt;</span> <span class="fu">as_tibble</span>() <span class="co"># Importation de la base wm</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>mn <span class="ot">&lt;-</span> <span class="fu">import</span>(<span class="fu">here</span>(<span class="st">"data/mics/mn.sav"</span>)) <span class="sc">|&gt;</span> <span class="fu">clean_names</span>() <span class="sc">|&gt;</span> <span class="fu">as_tibble</span>() <span class="co"># Importation de la base mn</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>fs <span class="ot">&lt;-</span> <span class="fu">import</span>(<span class="fu">here</span>(<span class="st">"data/mics/fs.sav"</span>)) <span class="sc">|&gt;</span> <span class="fu">clean_names</span>() <span class="sc">|&gt;</span> <span class="fu">as_tibble</span>() <span class="co"># Importation de la base fs</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>ch <span class="ot">&lt;-</span> <span class="fu">import</span>(<span class="fu">here</span>(<span class="st">"data/mics/ch.sav"</span>)) <span class="sc">|&gt;</span> <span class="fu">clean_names</span>() <span class="sc">|&gt;</span> <span class="fu">as_tibble</span>() <span class="co"># Importation de la base ch</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="creation-de-quelques-variables-dinterêt" class="level2">
@@ -378,7 +378,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="fu">val_labels</span>(hl<span class="sc">$</span>age_school) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Primaire"</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"Secondaire 1"</span> <span class="ot">=</span> <span class="dv">2</span>,<span class="st">"Secondaire 2"</span> <span class="ot">=</span> <span class="dv">3</span>)</span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="fu">cross_cases</span>(hl,HL4,age_school)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="fu">cross_cases</span>(hl,hl4,age_school)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="gmisc_table caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
@@ -399,27 +399,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td style="text-align: left;">&nbsp;&nbsp;&nbsp;Masculin&nbsp;</td>
-<td style="text-align: right;">3291</td>
-<td style="text-align: right;">1800</td>
-<td style="text-align: right;">1031</td>
+<td style="text-align: right;">3275</td>
+<td style="text-align: right;">1683</td>
+<td style="text-align: right;">951</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">&nbsp;&nbsp;&nbsp;Féminin&nbsp;</td>
-<td style="text-align: right;">3161</td>
-<td style="text-align: right;">1761</td>
-<td style="text-align: right;">922</td>
+<td style="text-align: right;">3155</td>
+<td style="text-align: right;">1605</td>
+<td style="text-align: right;">833</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; border-bottom: 2px solid grey;">&nbsp;&nbsp;&nbsp;#Total cases&nbsp;</td>
-<td style="text-align: right; border-bottom: 2px solid grey;">6452</td>
-<td style="text-align: right; border-bottom: 2px solid grey;">3561</td>
-<td style="text-align: right; border-bottom: 2px solid grey;">1953</td>
+<td style="text-align: right; border-bottom: 2px solid grey;">6430</td>
+<td style="text-align: right; border-bottom: 2px solid grey;">3288</td>
+<td style="text-align: right; border-bottom: 2px solid grey;">1784</td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cross_cpct</span>(hl,HL4,age_school)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cross_cpct</span>(hl,hl4,age_school)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="gmisc_table caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
@@ -440,21 +440,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td style="text-align: left;">&nbsp;&nbsp;&nbsp;Masculin&nbsp;</td>
-<td style="text-align: right;">51</td>
-<td style="text-align: right;">50.5</td>
-<td style="text-align: right;">52.8</td>
+<td style="text-align: right;">50.9</td>
+<td style="text-align: right;">51.2</td>
+<td style="text-align: right;">53.3</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">&nbsp;&nbsp;&nbsp;Féminin&nbsp;</td>
-<td style="text-align: right;">49</td>
-<td style="text-align: right;">49.5</td>
-<td style="text-align: right;">47.2</td>
+<td style="text-align: right;">49.1</td>
+<td style="text-align: right;">48.8</td>
+<td style="text-align: right;">46.7</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; border-bottom: 2px solid grey;">&nbsp;&nbsp;&nbsp;#Total cases&nbsp;</td>
-<td style="text-align: right; border-bottom: 2px solid grey;">6452</td>
-<td style="text-align: right; border-bottom: 2px solid grey;">3561</td>
-<td style="text-align: right; border-bottom: 2px solid grey;">1953</td>
+<td style="text-align: right; border-bottom: 2px solid grey;">6430</td>
+<td style="text-align: right; border-bottom: 2px solid grey;">3288</td>
+<td style="text-align: right; border-bottom: 2px solid grey;">1784</td>
 </tr>
 </tbody>
 </table>
@@ -475,8 +475,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="fu">val_labels</span>(hl<span class="sc">$</span>HH6) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">Urbian =</span> <span class="dv">1</span>, <span class="at">Rural =</span> <span class="dv">2</span>)</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="fu">val_labels</span>(hl<span class="sc">$</span>HH7) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Maritime"</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"Plateaux"</span> <span class="ot">=</span> <span class="dv">2</span>,<span class="st">"Centrale"</span> <span class="ot">=</span> <span class="dv">3</span>, <span class="st">"Kara"</span> <span class="ot">=</span> <span class="dv">4</span>,<span class="st">"Savanes"</span> <span class="ot">=</span> <span class="dv">5</span>, <span class="st">"Lomé Commune"</span> <span class="ot">=</span> <span class="dv">6</span>, <span class="st">"Golfe Urbain"</span> <span class="ot">=</span> <span class="dv">7</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="fu">val_labels</span>(hl<span class="sc">$</span>hh6) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">Urbian =</span> <span class="dv">1</span>, <span class="at">Rural =</span> <span class="dv">2</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="fu">val_labels</span>(hl<span class="sc">$</span>hh7) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Maritime"</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"Plateaux"</span> <span class="ot">=</span> <span class="dv">2</span>,<span class="st">"Centrale"</span> <span class="ot">=</span> <span class="dv">3</span>, <span class="st">"Kara"</span> <span class="ot">=</span> <span class="dv">4</span>,<span class="st">"Savanes"</span> <span class="ot">=</span> <span class="dv">5</span>, <span class="st">"Lomé Commune"</span> <span class="ot">=</span> <span class="dv">6</span>, <span class="st">"Golfe Urbain"</span> <span class="ot">=</span> <span class="dv">7</span>)</span>
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="fu">val_labels</span>(hl<span class="sc">$</span>HL4) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">Masculin =</span> <span class="dv">1</span>, <span class="at">Feminin =</span> <span class="dv">2</span>)</span>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="fu">val_labels</span>(hl<span class="sc">$</span>windex5) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Les plus pauvres"</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">"Second"</span> <span class="ot">=</span> <span class="dv">2</span>, <span class="st">"Moyen"</span> <span class="ot">=</span> <span class="dv">3</span>, <span class="st">"Quatrième"</span> <span class="ot">=</span> <span class="dv">4</span>,<span class="st">"Les plus riches"</span> <span class="ot">=</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

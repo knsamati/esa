@@ -45,15 +45,15 @@ $$
 La base ```hl``` permet de calculer la plupart des indicateurs de l'éducation.
 Pour les différents taux de scolarisation, on aura besoin de:
 
-- ```schage``` pour calculer les différents intervalles d'âge;
-- ```ED9``` la fréquentation scolaire au moment de la collecte
-- ```ED10A``` le niveau fréquenté au moment de l'enquête.
+* ```schage``` pour calculer les différents intervalles d'âge;
+* ```ED9``` la fréquentation scolaire au moment de la collecte
+* ```ED10A``` le niveau fréquenté au moment de l'enquête.
 
 On calcule les différents effectifs ainsi:
 
-- D'abord, On calcule le numérateur: par exemple pour le TBS du primaire, l'enfant fréquente au cours de l'année scolaire 2016-2017 (```ED9 == 1```) et est au primaire (```ED10A```);
-- Ensuite, on calcule le dénominateur. Pour le TBS au primaire, l'enfant a l'âge d'être au primaire (```age_school == 1``` ou encore ```schage>= 6 & schage <= 11```);
-- Et enfin on fait la somme des enfants répondent au critère du numérateur et du numérateur. Le rapport de ces deux totaux donne le TBS du primaire (```TBS_prim = survey_total(ES_prim,na.rm = TRUE)/survey_total(PAS_prim,na.rm = TRUE)```).
+* D'abord, On calcule le numérateur: par exemple pour le TBS du primaire, l'enfant fréquente au cours de l'année scolaire 2016-2017 (```ED9 == 1```) et est au primaire (```ED10A```);
+* Ensuite, on calcule le dénominateur. Pour le TBS au primaire, l'enfant a l'âge d'être au primaire (```age_school == 1``` ou encore ```schage>= 6 & schage <= 11```);
+* Et enfin on fait la somme des enfants répondent au critère du numérateur et du numérateur. Le rapport de ces deux totaux donne le TBS du primaire (```TBS_prim = survey_total(ES_prim,na.rm = TRUE)/survey_total(PAS_prim,na.rm = TRUE)```).
 
 
 
@@ -66,22 +66,22 @@ hl <- hl |>
     PAS_col = if_else(age_school == 2,1,0),
     PAS_lyc = if_else(age_school == 3,1,0),
     
-    ES_prim = if_else(ED9 == 1 & ED10A == 1,1,0),
-    ES_col = if_else(ED9 == 1 & ED10A == 2,1,0),
-    ES_lyc = if_else(ED9 == 1 & ED10A == 3,1,0),
+    ES_prim = if_else(ed9 == 1 & ed10a == 1,1,0),
+    ES_col = if_else(ed9 == 1 & ed10a == 2,1,0),
+    ES_lyc = if_else(ed9 == 1 & ed10a == 3,1,0),
     
-    ESAS_prim = if_else(age_school == 1 & ED9 == 1 & ED10A == 1,1,0),
-    ESAS_col = if_else(age_school == 2 & ED9 == 1 & ED10A == 2,1,0),
-    ESAS_lyc = if_else(age_school == 3 & ED9 == 1 & ED10A == 3,1,0),
+    ESAS_prim = if_else(age_school == 1 & ed9 == 1 & ed10a == 1,1,0),
+    ESAS_col = if_else(age_school == 2 & ed9 == 1 & ed10a == 2,1,0),
+    ESAS_lyc = if_else(age_school == 3 & ed9 == 1 & ed10a == 3,1,0),
     
-    ESASA_prim = if_else(age_school == 1 & ED9 == 1 & (ED10A == 1 | ED10A == 2),1,0),
-    ESASA_col = if_else(age_school == 2 & ED9 == 1 & (ED10A == 2 | ED10A == 3),1,0),
-    ESASA_lyc = if_else(age_school == 3 & ED9 == 1 & (ED10A == 3 | ED10A == 4 | ED10A == 4),1,0),
+    ESASA_prim = if_else(age_school == 1 & ed9 == 1 & (ed10a == 1 | ed10a == 2),1,0),
+    ESASA_col = if_else(age_school == 2 & ed9 == 1 & (ed10a == 2 | ed10a == 3),1,0),
+    ESASA_lyc = if_else(age_school == 3 & ed9 == 1 & (ed10a == 3 | ed10a == 4 | ed10a == 4),1,0),
     
     NAR = case_when(
-    age_school == 1 & ED9 == 1 & ED10A == 1 ~ 1,
-    age_school == 2 & ED9 == 1 & ED10A == 2 ~ 1,
-    age_school == 3 & ED9 == 1 & ED10A == 3 ~ 1,
+    age_school == 1 & ed9 == 1 & ed10a == 1 ~ 1,
+    age_school == 2 & ed9 == 1 & ed10a == 2 ~ 1,
+    age_school == 3 & ed9 == 1 & ed10a == 3 ~ 1,
     .default = 0
     )
   )
@@ -105,25 +105,25 @@ indic_sco = function(numerateur1,numerateur2,numerateur3,denominateur,niveau,by,
 
 
 indic10 <- indic_sco(ES_prim,ESAS_prim,ESASA_prim,PAS_prim,"prim",0,"National")
-indic11 <- indic_sco(ES_prim,ESAS_prim,ESASA_prim,PAS_prim,"prim",HL4,"Genre")
-indic12 <- indic_sco(ES_prim,ESAS_prim,ESASA_prim,PAS_prim,"prim",HH6,"Urbain/Rural")
-indic13 <- indic_sco(ES_prim,ESAS_prim,ESASA_prim,PAS_prim,"prim",HH7,"Region")
+indic11 <- indic_sco(ES_prim,ESAS_prim,ESASA_prim,PAS_prim,"prim",hl4,"Genre")
+indic12 <- indic_sco(ES_prim,ESAS_prim,ESASA_prim,PAS_prim,"prim",hh6,"Urbain/Rural")
+indic13 <- indic_sco(ES_prim,ESAS_prim,ESASA_prim,PAS_prim,"prim",hh7,"Region")
 indic14 <- indic_sco(ES_prim,ESAS_prim,ESASA_prim,PAS_prim,"prim",windex5,"Richesse")
 
 indic_prim = rbind(indic10,indic11,indic12,indic13,indic14)
 
 indic20 <- indic_sco(ES_col,ESAS_col,ESASA_col,PAS_col,"col",0,"National")
-indic21 <- indic_sco(ES_col,ESAS_col,ESASA_col,PAS_col,"col",HL4,"Genre")
-indic22 <- indic_sco(ES_col,ESAS_col,ESASA_col,PAS_col,"col",HH6,"Urbain/Rural")
-indic23 <- indic_sco(ES_col,ESAS_col,ESASA_col,PAS_col,"col",HH7,"Region")
+indic21 <- indic_sco(ES_col,ESAS_col,ESASA_col,PAS_col,"col",hl4,"Genre")
+indic22 <- indic_sco(ES_col,ESAS_col,ESASA_col,PAS_col,"col",hh6,"Urbain/Rural")
+indic23 <- indic_sco(ES_col,ESAS_col,ESASA_col,PAS_col,"col",hh7,"Region")
 indic24 <- indic_sco(ES_col,ESAS_col,ESASA_col,PAS_col,"col",windex5,"Richesse")
 
 indic_sec1 = rbind(indic20,indic21,indic22,indic23,indic24)
 
 indic30 <- indic_sco(ES_lyc,ESAS_lyc,ESASA_lyc,PAS_lyc,"lyc",0,"National")
-indic31 <- indic_sco(ES_lyc,ESAS_lyc,ESASA_lyc,PAS_lyc,"lyc",HL4,"Genre")
-indic32 <- indic_sco(ES_lyc,ESAS_lyc,ESASA_lyc,PAS_lyc,"lyc",HH6,"Urbain/Rural")
-indic33 <- indic_sco(ES_lyc,ESAS_lyc,ESASA_lyc,PAS_lyc,"lyc",HH7,"Region")
+indic31 <- indic_sco(ES_lyc,ESAS_lyc,ESASA_lyc,PAS_lyc,"lyc",hl4,"Genre")
+indic32 <- indic_sco(ES_lyc,ESAS_lyc,ESASA_lyc,PAS_lyc,"lyc",hh6,"Urbain/Rural")
+indic33 <- indic_sco(ES_lyc,ESAS_lyc,ESASA_lyc,PAS_lyc,"lyc",hh7,"Region")
 indic34 <- indic_sco(ES_lyc,ESAS_lyc,ESASA_lyc,PAS_lyc,"lyc",windex5,"Richesse")
 
 indic_sec2 = rbind(indic30,indic31,indic32,indic33,indic34)
@@ -249,32 +249,32 @@ df <- couverture |>
 
 
 TNS_lyc <-  hl_design |>
-    group_by(HH7,HL4) |> 
+    group_by(hh7,hl4) |> 
     summarise(
       TNS = survey_total(ESAS_col,na.rm = TRUE)/survey_total(PAS_col,na.rm = TRUE)*100
     ) |> 
-    select(HH7,HL4,TNS)  |> 
+    select(hh7,hl4,TNS)  |> 
     mutate(
-      HH7 = case_when(
-      HH7 == 1 ~ "Maritime",
-      HH7 == 2 ~ "Plateaux",
-      HH7 == 3 ~ "Centrale",
-      HH7 == 4 ~ "Kara",
-      HH7 == 5 ~ "Savanes",
-      HH7 == 6 ~ "Lome-Comm",
-      HH7 == 7 ~ "Golfe-Urbain"),
-      HL4 = case_when(
-      HL4 == 1 ~ "Masculin",
-      HL4 == 2 ~ "Feminin")
+      hh7 = case_when(
+      hh7 == 1 ~ "Maritime",
+      hh7 == 2 ~ "Plateaux",
+      hh7 == 3 ~ "Centrale",
+      hh7 == 4 ~ "Kara",
+      hh7 == 5 ~ "Savanes",
+      hh7 == 6 ~ "Lome-Comm",
+      hh7 == 7 ~ "Golfe-Urbain"),
+      hl4 = case_when(
+      hl4 == 1 ~ "Masculin",
+      hl4 == 2 ~ "Feminin")
     ) |> 
   mutate(
-    HH7 = fct_reorder(HH7,TNS)
+    hh7 = fct_reorder(hh7,TNS)
   )
   
 
-ggplot(TNS_lyc, aes(x = TNS, y = HH7)) +
+ggplot(TNS_lyc, aes(x = TNS, y = hh7)) +
   geom_line() +
-  geom_point(aes(color = HL4),size = 3,show.legend = FALSE) +
+  geom_point(aes(color = hl4),size = 3,show.legend = FALSE) +
   scale_color_manual(name = NULL, values = c("#33658A", "#00B0F0")) +
   theme_minimal() +
   theme(legend.position = "bottom") +
@@ -318,8 +318,8 @@ $$
 
 La démarche porte sur les étapes suivantes:
 
-- Numérateur par exemple pour le CP2, L'enfant est scolarisé au primaire en 2016-2017 (```ED10A == 1```), fréquente la classe de CP2 (```ED10B == 2```), qu'il soit nouveau dans la classe de CP2 (```ED16A == 1 & ED16B  == 1```, en d'autre terme, il était au CP1 l'année précédente);
-- Dénominateur pour le CP2, l'enfant doit être agé de 7 ans (```schage==11```)
+* Numérateur par exemple pour le CP2, L'enfant est scolarisé au primaire en 2016-2017 (```ED10A == 1```), fréquente la classe de CP2 (```ED10B == 2```), qu'il soit nouveau dans la classe de CP2 (```ED16A == 1 & ED16B  == 1```, en d'autre terme, il était au CP1 l'année précédente);
+* Dénominateur pour le CP2, l'enfant doit être agé de 7 ans (```schage==11```)
 
 
 
@@ -328,15 +328,15 @@ acces <-  function(niveauAn,classeAn,by){
   if (classeAn < 2){
     hl_design <- hl |> 
       mutate(
-        NE= ifelse(ED10A == {{niveauAn}} & ED10B == {{classeAn}} , 1,0),
-        PA = if_else(schage == {{classeAn}}+5,1,0)
+        NE = ifelse(ed10a == {{niveauAn}} & ed10b == {{classeAn}} , 1,0),
+        PA = if_else(schage == {{classeAn}} + 5,1,0)
       ) |>
       as_survey_design(weights = hhweight) 
       
   } else{
     hl_design <- hl |> 
       mutate(
-        NE = ifelse(ED10A == {{niveauAn}} & ED10B == {{classeAn}} & ED16A == {{niveauAn}} & ED16B  == {{classeAn}}-1, 1,0),
+        NE = ifelse(ed10a == {{niveauAn}} & ed10b == {{classeAn}} & ed16a == {{niveauAn}} & ed16b  == {{classeAn}}-1, 1,0),
         PA = if_else(schage == {{classeAn}}+5,1,0)) |>
       as_survey_design(weights = hhweight) 
   }
@@ -355,7 +355,7 @@ prim_ens = cbind(acces(1,1,0),acces(1,2,0),acces(1,3,0),acces(1,4,0),acces(1,5,0
   rownames_to_column("var") |> 
   mutate(var = if_else(var == 1,"Nationale",var))
   
-prim_genre = cbind(acces(1,1,HL4),acces(1,2,HL4),acces(1,3,HL4),acces(1,4,HL4),acces(1,5,HL4),acces(1,6,HL4)) |> 
+prim_genre = cbind(acces(1,1,hl4),acces(1,2,hl4),acces(1,3,hl4),acces(1,4,hl4),acces(1,5,hl4),acces(1,6,hl4)) |> 
   rownames_to_column("var") |> 
   mutate(var = if_else(var == 1,"Masculin","Feminin"))
 
@@ -375,7 +375,7 @@ sec1_ens <-  cbind(acces(2,1,0),acces(2,2,0),acces(2,3,0),acces(2,4,0)) |>
   rownames_to_column("var") |> 
   mutate(var = if_else(var == 1,"Nationale",var))
 
-sec1_genre <-  cbind(acces(2,1,HL4),acces(2,2,HL4),acces(2,3,HL4),acces(2,4,HL4)) |> 
+sec1_genre <-  cbind(acces(2,1,hl4),acces(2,2,hl4),acces(2,3,hl4),acces(2,4,hl4)) |> 
   rownames_to_column("var") |> 
   mutate(var = if_else(var == 1,"Masculin","Feminin"))
 
@@ -392,7 +392,7 @@ sec2_ens <-  cbind(acces(3,1,0),acces(3,2,0),acces(3,3,0)) |>
   rownames_to_column("var") |> 
   mutate(var = if_else(var == 1,"Nationale",var))
 
-sec2_genre <-  cbind(acces(3,1,HL4),acces(3,2,HL4),acces(3,3,HL4)) |> 
+sec2_genre <-  cbind(acces(3,1,hl4),acces(3,2,hl4),acces(3,3,hl4)) |> 
   rownames_to_column("var") |> 
   mutate(var = if_else(var == 1,"Masculin","Feminin"))
 

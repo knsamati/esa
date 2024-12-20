@@ -15,6 +15,21 @@ grd6 <- import(here("data/pasec/tg_grd6.dta")) |> clean_names() |> as_tibble()
 
 
 
+## Le score moyen 
+
+### Rappel Méthodologique
+
+:::{.callout-note appearance="simple"}
+
+### 1. Le taux brut de scolarisation {.unnumbered}
+
+
+
+$$
+TBS = \frac{ES}{PAS}
+$$
+:::
+
 
 
 
@@ -47,6 +62,23 @@ grd6_design |>
 
 ```
 
+
+
+## Repartition par niveau
+
+
+### Rappel Méthodologique
+
+:::{.callout-note appearance="simple"}
+
+### 1. Le taux brut de scolarisation {.unnumbered}
+
+
+
+$$
+TBS = \frac{ES}{PAS}
+$$
+:::
 
 
 
@@ -111,4 +143,34 @@ grd6_rep |>
 
 
 ```
+
+
+## Une analyse de la performance en matière d'alphabétisation
+
+
+### Rappel Méthodologique
+
+:::{.callout-note appearance="simple"}
+
+### Le taux d'alphabétisation
+
+
+
+$$
+TBS = \frac{ES}{PAS}
+$$
+:::
+
+
+
+### Implémentation
+
+```{r}
+
+#mn |> 
+#  select(HH1, HH2, HL1, MWB14, MWAGEM, MMT6, MMT4, MMT5, mwelevel, mnweight, MMA1, MMA5)
+
+
+```
+
 

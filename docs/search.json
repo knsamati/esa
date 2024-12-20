@@ -94,7 +94,7 @@
     "href": "preparation.html#importation-des-données",
     "title": "Préparation des données",
     "section": "Importation des données",
-    "text": "Importation des données\nLes bases sont importées avec la fonction here () pour spécifier l’emplacement des bases de données qui sont dans le dossier data et import du package rio.\n\nhl &lt;- import(here(\"data/mics/hl.sav\")) |&gt; as_tibble() # Importation de la base hl\nwm &lt;- import(here(\"data/mics/wm.sav\")) |&gt; as_tibble() # Importation de la base wm\nmn &lt;- import(here(\"data/mics/mn.sav\")) |&gt; as_tibble() # Importation de la base mn\nfs &lt;- import(here(\"data/mics/fs.sav\")) |&gt; as_tibble() # Importation de la base fs\nch &lt;- import(here(\"data/mics/ch.sav\")) |&gt; as_tibble() # Importation de la base ch",
+    "text": "Importation des données\nLes bases sont importées avec la fonction here () pour spécifier l’emplacement des bases de données qui sont dans le dossier data et import du package rio.\n\nhl &lt;- import(here(\"data/mics/hl.sav\")) |&gt; clean_names() |&gt; as_tibble() # Importation de la base hl\nwm &lt;- import(here(\"data/mics/wm.sav\")) |&gt; clean_names() |&gt; as_tibble() # Importation de la base wm\nmn &lt;- import(here(\"data/mics/mn.sav\")) |&gt; clean_names() |&gt; as_tibble() # Importation de la base mn\nfs &lt;- import(here(\"data/mics/fs.sav\")) |&gt; clean_names() |&gt; as_tibble() # Importation de la base fs\nch &lt;- import(here(\"data/mics/ch.sav\")) |&gt; clean_names() |&gt; as_tibble() # Importation de la base ch",
     "crumbs": [
       "Préparation des données"
     ]
@@ -104,7 +104,7 @@
     "href": "preparation.html#creation-de-quelques-variables-dinterêt",
     "title": "Préparation des données",
     "section": "Creation de quelques variables d’interêt",
-    "text": "Creation de quelques variables d’interêt\n\n# Création d'une variable age pour les différents niveau scolaire\n\nhl &lt;- hl |&gt; \n  mutate(\n    age_school = case_when(\n    schage&gt;= 6 & schage &lt;= 11 ~  1,\n    schage&gt;= 12 & schage &lt;= 15 ~ 2,\n    schage&gt;= 16 & schage &lt;= 18 ~ 3,\n    .default = NA\n  ))\n\nval_labels(hl$age_school) &lt;- c(\"Primaire\" = 1, \"Secondaire 1\" = 2,\"Secondaire 2\" = 3)\n\n\ncross_cases(hl,HL4,age_school)\n\n\n\n\n\n age_school \n\n\n\n Primaire \n Secondaire 1 \n Secondaire 2 \n\n\n\n\n Sexe \n\n\n   Masculin \n3291\n1800\n1031\n\n\n   Féminin \n3161\n1761\n922\n\n\n   #Total cases \n6452\n3561\n1953\n\n\n\n\n\ncross_cpct(hl,HL4,age_school)\n\n\n\n\n\n age_school \n\n\n\n Primaire \n Secondaire 1 \n Secondaire 2 \n\n\n\n\n Sexe \n\n\n   Masculin \n51\n50.5\n52.8\n\n\n   Féminin \n49\n49.5\n47.2\n\n\n   #Total cases \n6452\n3561\n1953",
+    "text": "Creation de quelques variables d’interêt\n\n# Création d'une variable age pour les différents niveau scolaire\n\nhl &lt;- hl |&gt; \n  mutate(\n    age_school = case_when(\n    schage&gt;= 6 & schage &lt;= 11 ~  1,\n    schage&gt;= 12 & schage &lt;= 15 ~ 2,\n    schage&gt;= 16 & schage &lt;= 18 ~ 3,\n    .default = NA\n  ))\n\nval_labels(hl$age_school) &lt;- c(\"Primaire\" = 1, \"Secondaire 1\" = 2,\"Secondaire 2\" = 3)\n\n\ncross_cases(hl,hl4,age_school)\n\n\n\n\n\n age_school \n\n\n\n Primaire \n Secondaire 1 \n Secondaire 2 \n\n\n\n\n Sexe \n\n\n   Masculin \n3275\n1683\n951\n\n\n   Féminin \n3155\n1605\n833\n\n\n   #Total cases \n6430\n3288\n1784\n\n\n\n\n\ncross_cpct(hl,hl4,age_school)\n\n\n\n\n\n age_school \n\n\n\n Primaire \n Secondaire 1 \n Secondaire 2 \n\n\n\n\n Sexe \n\n\n   Masculin \n50.9\n51.2\n53.3\n\n\n   Féminin \n49.1\n48.8\n46.7\n\n\n   #Total cases \n6430\n3288\n1784",
     "crumbs": [
       "Préparation des données"
     ]
@@ -114,7 +114,7 @@
     "href": "preparation.html#fonction-pour-calculer-les-taux",
     "title": "Préparation des données",
     "section": "Fonction pour calculer les taux",
-    "text": "Fonction pour calculer les taux\nEtant donné que la plupart des indicateurs de l’éducation élaborer à partir des enquêtes ménages sont des taux, nous allons écrire une fonction pour nous permettre de calculer ces taux plus rapidement\n\n\n#' numérateur : le numérateur du taux\n#' dénominateur: le dénominateur du taux\n\n\ntaux &lt;- function(numerateur,denominateur){\n    survey_total({{numerateur}},rm = TRUE)/survey_total({{denominateur}},na.rm = TRUE)\n  \n}\n\nval_labels(hl$HH6) &lt;- c(Urbian = 1, Rural = 2)\nval_labels(hl$HH7) &lt;- c(\"Maritime\" = 1, \"Plateaux\" = 2,\"Centrale\" = 3, \"Kara\" = 4,\"Savanes\" = 5, \"Lomé Commune\" = 6, \"Golfe Urbain\" = 7)\nval_labels(hl$HL4) &lt;- c(Masculin = 1, Feminin = 2)\n\nval_labels(hl$windex5) &lt;- c(\"Les plus pauvres\" = 1, \"Second\" = 2, \"Moyen\" = 3, \"Quatrième\" = 4,\"Les plus riches\" = 5)",
+    "text": "Fonction pour calculer les taux\nEtant donné que la plupart des indicateurs de l’éducation élaborer à partir des enquêtes ménages sont des taux, nous allons écrire une fonction pour nous permettre de calculer ces taux plus rapidement\n\n\n#' numérateur : le numérateur du taux\n#' dénominateur: le dénominateur du taux\n\n\ntaux &lt;- function(numerateur,denominateur){\n    survey_total({{numerateur}},rm = TRUE)/survey_total({{denominateur}},na.rm = TRUE)\n  \n}\n\nval_labels(hl$hh6) &lt;- c(Urbian = 1, Rural = 2)\nval_labels(hl$hh7) &lt;- c(\"Maritime\" = 1, \"Plateaux\" = 2,\"Centrale\" = 3, \"Kara\" = 4,\"Savanes\" = 5, \"Lomé Commune\" = 6, \"Golfe Urbain\" = 7)\nval_labels(hl$HL4) &lt;- c(Masculin = 1, Feminin = 2)\n\nval_labels(hl$windex5) &lt;- c(\"Les plus pauvres\" = 1, \"Second\" = 2, \"Moyen\" = 3, \"Quatrième\" = 4,\"Les plus riches\" = 5)",
     "crumbs": [
       "Préparation des données"
     ]
@@ -198,7 +198,7 @@
     "href": "efficacite_interne.html",
     "title": "3  Efficacité interne du système",
     "section": "",
-    "text": "In summary, this book has no content whatsoever.\n\n1 + 1\n\n[1] 2",
+    "text": "3.1 Le redoublement",
     "crumbs": [
       "Analyse de la scolarisation, de l'efficacité interne et des enfants hors du système scolaraire",
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Efficacité interne du système</span>"
@@ -228,12 +228,12 @@
   {
     "objectID": "qualite.html",
     "href": "qualite.html",
-    "title": "6  Analyse de la qualité du système",
+    "title": "5  Analyse de la qualité du système",
     "section": "",
-    "text": "6.1 Importation des données\ngrd2 &lt;- import(here(\"data/pasec/tg_grd2.dta\")) |&gt; clean_names() |&gt; as_tibble()\n\ngrd6 &lt;- import(here(\"data/pasec/tg_grd6.dta\")) |&gt; clean_names() |&gt; as_tibble()\ngrd2_design &lt;- grd2 |&gt; \n  as_survey_design(weights = rwgt0)\n\ngrd2_design &lt;- grd2_design |&gt; \n  mutate(lng2 = (lect_pv1 + lect_pv2 + lect_pv3 + lect_pv4 + lect_pv5)/5,\n         math2 = (maths_pv1 + maths_pv2 + maths_pv3 + maths_pv4 + maths_pv5)/5) \n\ngrd2_design |&gt; \n  group_by(id_strate) |&gt; \n  summarise(sc_lng2 = survey_mean(lng2),\n            sc_math2 =survey_mean(math2))\n#&gt; # A tibble: 6 × 5\n#&gt;   id_strate sc_lng2 sc_lng2_se sc_math2 sc_math2_se\n#&gt;       &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt;\n#&gt; 1         1    465.       7.26     487.        6.69\n#&gt; 2         2    564.       5.68     549.        4.03\n#&gt; 3         3    428.       6.21     460.        5.44\n#&gt; 4         4    483.       4.83     505.        4.36\n#&gt; 5         5    419.       4.46     451.        3.94\n#&gt; 6         6    435.       4.23     447.        3.84\n\n\ngrd6_design &lt;- grd6 |&gt; \n  as_survey_design(weights = rwgt0)\n\ngrd6_design &lt;- grd6_design |&gt; \n  mutate(lng6 = (lect_pv1 + lect_pv2 + lect_pv3 + lect_pv4 + lect_pv5)/5,\n         math6 = (maths_pv1 + maths_pv2 + maths_pv3 + maths_pv4 + maths_pv5)/5)\n\ngrd6_design |&gt; \n  group_by(id_strate) |&gt; \n  summarise(sc_lng6 = survey_mean(lng6),\n            sc_math6 = survey_mean(math6))\n#&gt; # A tibble: 6 × 5\n#&gt;   id_strate sc_lng6 sc_lng6_se sc_math6 sc_math6_se\n#&gt;       &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt;\n#&gt; 1         1    451.       2.88     433.        2.78\n#&gt; 2         2    604.       2.48     596.        2.44\n#&gt; 3         3    451.       2.85     451.        2.50\n#&gt; 4         4    505.       2.24     515.        2.40\n#&gt; 5         5    443.       2.53     454.        2.54\n#&gt; 6         6    430.       2.46     429.        2.37\ngrd2_rep &lt;- grd2 |&gt; \n  as_survey_rep(weights = rwgt0,repweights = rwgt1:rwgt45,type = \"JK1\",mse = TRUE,combined.weights = TRUE, scale = (45-1)/45) |&gt; \n  mutate(lng2 = (lect_pv1 + lect_pv2 + lect_pv3 + lect_pv4 + lect_pv5)/5,\n         math2 = (maths_pv1 + maths_pv2 + maths_pv3 + maths_pv4 + maths_pv5)/5)\n\ngrd2_rep |&gt; \n  mutate(niveau = case_when(\n    lng2 &lt;= 399.12 ~ \"Ss_Niveau_1\",\n    lng2 &gt; 399.12 & lng2 &lt;= 469.54 ~ \"Niveau_1\",\n    lng2 &gt; 469.54 & lng2 &lt;= 539.96 ~ \"Niveau_2\",\n    lng2 &gt; 539.96 & lng2 &lt;= 610.38 ~ \"Niveau_3\",\n    lng2 &gt; 610.38 ~ \"Niveau_4\",\n    TRUE ~ NA_character_)) |&gt; \n  group_by(niveau) |&gt; \n  summarise(p = survey_mean())\n#&gt; # A tibble: 5 × 3\n#&gt;   niveau          p   p_se\n#&gt;   &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;\n#&gt; 1 Niveau_1    0.305 0.0161\n#&gt; 2 Niveau_2    0.223 0.0172\n#&gt; 3 Niveau_3    0.122 0.0123\n#&gt; 4 Niveau_4    0.116 0.0167\n#&gt; 5 Ss_Niveau_1 0.234 0.0244\n\ngrd2_rep |&gt; \n  mutate(niveau = case_when(\n    math2 &lt; 400 ~ \"Ss_Niveau_1\",\n    math2 &gt;= 400 & math2 &lt; 489 ~ \"Niveau_1\",\n    math2 &gt;= 489 & math2 &lt; 577 ~ \"Niveau_2\",\n    math2 &gt;= 577 ~ \"Niveau_3\",\n    TRUE ~ NA_character_)) |&gt; \n  group_by(niveau) |&gt; \n  summarise(p = survey_mean())\n#&gt; # A tibble: 4 × 3\n#&gt;   niveau          p   p_se\n#&gt;   &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;\n#&gt; 1 Niveau_1    0.377 0.0169\n#&gt; 2 Niveau_2    0.279 0.0132\n#&gt; 3 Niveau_3    0.190 0.0174\n#&gt; 4 Ss_Niveau_1 0.154 0.0181\n\n\ngrd6_rep &lt;- grd6 |&gt; \n  as_survey_rep(weights = rwgt0,repweights = rwgt1:rwgt90,type = \"JK1\",mse = TRUE,combined.weights = FALSE, scale = (45-1)/45) |&gt; \n  mutate(lng6 = (lect_pv1 + lect_pv2 + lect_pv3 + lect_pv4 + lect_pv5)/5,\n         math6 = (maths_pv1 + maths_pv2 + maths_pv3 + maths_pv4 + maths_pv5)/5)\n\n\ngrd6_rep |&gt; \n  mutate(niveau = case_when(\n    lng6 &lt; 365.01 ~ \"Ss_Niveau_1\",\n    lng6 &gt; 365.01 & lng6 &lt;= 441.69 ~ \"Niveau_1\",\n    lng6 &gt; 441.69 & lng6 &lt;= 518.37 ~ \"Niveau_2\",\n    lng6 &gt; 518.37 & lng6 &lt;= 595.05 ~ \"Niveau_3\",\n    lng6 &gt; 595.05 ~ \"Niveau_4\",\n    TRUE ~ NA_character_)) |&gt; \n  group_by(niveau) |&gt; \n  summarise(p = survey_mean())\n#&gt; # A tibble: 5 × 3\n#&gt;   niveau           p    p_se\n#&gt;   &lt;chr&gt;        &lt;dbl&gt;   &lt;dbl&gt;\n#&gt; 1 Niveau_1    0.306  0.0150 \n#&gt; 2 Niveau_2    0.244  0.0113 \n#&gt; 3 Niveau_3    0.191  0.00952\n#&gt; 4 Niveau_4    0.195  0.0109 \n#&gt; 5 Ss_Niveau_1 0.0648 0.00640\n\n\ngrd6_rep |&gt; \n  mutate(niveau = case_when(\n    math6 &lt; 433 ~ \"Ss_Niveau_1\",\n    math6 &gt;= 433 & math6 &lt; 521 ~ \"Niveau_1\",\n    math6 &gt;= 521 & math6 &lt; 609 ~ \"Niveau_2\",\n    math6 &gt;= 609 ~ \"Niveau_3\",\n    TRUE ~ NA_character_)) |&gt; \n  group_by(niveau) |&gt; \n  summarise(p = survey_mean()) \n#&gt; # A tibble: 4 × 3\n#&gt;   niveau          p   p_se\n#&gt;   &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;\n#&gt; 1 Niveau_1    0.305 0.0124\n#&gt; 2 Niveau_2    0.215 0.0114\n#&gt; 3 Niveau_3    0.155 0.0117\n#&gt; 4 Ss_Niveau_1 0.325 0.0175",
+    "text": "5.1 Importation des données\ngrd2 &lt;- import(here(\"data/pasec/tg_grd2.dta\")) |&gt; clean_names() |&gt; as_tibble()\n\ngrd6 &lt;- import(here(\"data/pasec/tg_grd6.dta\")) |&gt; clean_names() |&gt; as_tibble()",
     "crumbs": [
       "Analyse de la qualité du système",
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Analyse de la qualité du système</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Analyse de la qualité du système</span>"
     ]
   },
   {
@@ -319,6 +319,83 @@
     "crumbs": [
       "Analyse de la scolarisation, de l'efficacité interne et des enfants hors du système scolaraire",
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Analyse de la capacité d'accueil du système et de la couverture scolaire</span>"
+    ]
+  },
+  {
+    "objectID": "efficacite_interne.html#le-redoublement",
+    "href": "efficacite_interne.html#le-redoublement",
+    "title": "3  Efficacité interne du système",
+    "section": "",
+    "text": "3.1.1 Rappel Méthodologique\n\n\n\n\n\n\nLa question de redoublement est souvent abordé à travers le taux de redoublement et le pourcentage de redoublement. Ce sont deux indicateurs très proches mais qui sont légèrement différents dans leur interprétation et dans leur calcul.\n\n1. Le taux de redoublement\nLe taux de redoublement est la proportion des redoublants dans une classe i à une année donnée t par rapport à l’effectif des élèves dans cette même classe i l’année précédente (t-1).\nEn désignant NR, l’éffectif des redoublements de la classe i de l’année t, et ET, l’effectif total de la classe i de l’année t-1, le taux de redoublement est calculé par la formule suivante:\n\\[\nTR = \\frac{NR_{i,t}}{ET_{i,t-1}}\n\\]\n\n\n2. Le pourcentage de redoublement\nLe pourcentage de redoublants est la proportion de redoublants dans une classe (ou dans un cycle).\nEn désignant NR, l’éffectit des redoublements de la classe i de l’année t, et ET, l’effectif total de la classe i de l’année t, le pourcentage de redoublement est calculé par la formule suivante:\n\\[\nPR = \\frac{NR_{i,t}}{ET_{i,t}}\n\\]\n\n\n\n\n\n\n3.1.2 Implémentation\nPour calculer le taux et le pourcentage de redoublement avec les données de l’enquête MICS, la démarche est la suivante:\n\nOn crée une variable qui mesure le redoublement;\nCette variable est égale 1 si la personne a redoublé la classe, c’est à dire\n\nLa personne a fréquenté le même niveau l’année précédente et l’année en cours ED16A==ED10A ET\nLa personne a fréquenté la même classe l’année précédente et l’année en cours ED16B==ED10B ET\nLa personne fréquente bien un niveau l’année en cours ED16A!=..\n\n\n\nhl &lt;- hl |&gt; \n  mutate(\n    Red = case_when(\n      (ED16A==ED10A) & (ED16B==ED10B) & !is.na(ED16A) ~ 1,\n      !is.na(ED16A)  ~ 0\n    )\n  )",
+    "crumbs": [
+      "Analyse de la scolarisation, de l'efficacité interne et des enfants hors du système scolaraire",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Efficacité interne du système</span>"
+    ]
+  },
+  {
+    "objectID": "efficacite_interne.html#les-abandons",
+    "href": "efficacite_interne.html#les-abandons",
+    "title": "3  Efficacité interne du système",
+    "section": "3.2 Les abandons",
+    "text": "3.2 Les abandons\n\n3.2.1 Rappel Méthodologique\n\n\n\n\n\n\n1. Le taux brut de scolarisation\n\n\n\n\\[\nTBS = \\frac{ES}{PAS}\n\\]",
+    "crumbs": [
+      "Analyse de la scolarisation, de l'efficacité interne et des enfants hors du système scolaraire",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Efficacité interne du système</span>"
+    ]
+  },
+  {
+    "objectID": "efficacite_interne.html#le-coefficient-défficacité-interne",
+    "href": "efficacite_interne.html#le-coefficient-défficacité-interne",
+    "title": "3  Efficacité interne du système",
+    "section": "3.3 Le Coefficient d’éfficacité interne",
+    "text": "3.3 Le Coefficient d’éfficacité interne\n\n3.3.1 Rappel Méthodologique\n\n\n\n\n\n\n1. Le taux brut de scolarisation\n\n\n\n\\[\nTBS = \\frac{ES}{PAS}\n\\]",
+    "crumbs": [
+      "Analyse de la scolarisation, de l'efficacité interne et des enfants hors du système scolaraire",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Efficacité interne du système</span>"
+    ]
+  },
+  {
+    "objectID": "qualite.html#le-score-moyen",
+    "href": "qualite.html#le-score-moyen",
+    "title": "5  Analyse de la qualité du système",
+    "section": "5.2 Le score moyen",
+    "text": "5.2 Le score moyen\n\n5.2.1 Rappel Méthodologique\n\n\n\n\n\n\n1. Le taux brut de scolarisation\n\n\n\n\\[\nTBS = \\frac{ES}{PAS}\n\\]\n\n\n\ngrd2_design &lt;- grd2 |&gt; \n  as_survey_design(weights = rwgt0)\n\ngrd2_design &lt;- grd2_design |&gt; \n  mutate(lng2 = (lect_pv1 + lect_pv2 + lect_pv3 + lect_pv4 + lect_pv5)/5,\n         math2 = (maths_pv1 + maths_pv2 + maths_pv3 + maths_pv4 + maths_pv5)/5) \n\ngrd2_design |&gt; \n  group_by(id_strate) |&gt; \n  summarise(sc_lng2 = survey_mean(lng2),\n            sc_math2 =survey_mean(math2))\n#&gt; # A tibble: 6 × 5\n#&gt;   id_strate sc_lng2 sc_lng2_se sc_math2 sc_math2_se\n#&gt;       &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt;\n#&gt; 1         1    465.       7.26     487.        6.69\n#&gt; 2         2    564.       5.68     549.        4.03\n#&gt; 3         3    428.       6.21     460.        5.44\n#&gt; 4         4    483.       4.83     505.        4.36\n#&gt; 5         5    419.       4.46     451.        3.94\n#&gt; 6         6    435.       4.23     447.        3.84\n\n\ngrd6_design &lt;- grd6 |&gt; \n  as_survey_design(weights = rwgt0)\n\ngrd6_design &lt;- grd6_design |&gt; \n  mutate(lng6 = (lect_pv1 + lect_pv2 + lect_pv3 + lect_pv4 + lect_pv5)/5,\n         math6 = (maths_pv1 + maths_pv2 + maths_pv3 + maths_pv4 + maths_pv5)/5)\n\ngrd6_design |&gt; \n  group_by(id_strate) |&gt; \n  summarise(sc_lng6 = survey_mean(lng6),\n            sc_math6 = survey_mean(math6))\n#&gt; # A tibble: 6 × 5\n#&gt;   id_strate sc_lng6 sc_lng6_se sc_math6 sc_math6_se\n#&gt;       &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt;\n#&gt; 1         1    451.       2.88     433.        2.78\n#&gt; 2         2    604.       2.48     596.        2.44\n#&gt; 3         3    451.       2.85     451.        2.50\n#&gt; 4         4    505.       2.24     515.        2.40\n#&gt; 5         5    443.       2.53     454.        2.54\n#&gt; 6         6    430.       2.46     429.        2.37",
+    "crumbs": [
+      "Analyse de la qualité du système",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Analyse de la qualité du système</span>"
+    ]
+  },
+  {
+    "objectID": "qualite.html#repartition-par-niveau",
+    "href": "qualite.html#repartition-par-niveau",
+    "title": "5  Analyse de la qualité du système",
+    "section": "5.3 Repartition par niveau",
+    "text": "5.3 Repartition par niveau\n\n5.3.1 Rappel Méthodologique\n\n\n\n\n\n\n1. Le taux brut de scolarisation\n\n\n\n\\[\nTBS = \\frac{ES}{PAS}\n\\]\n\n\n\n\ngrd2_rep &lt;- grd2 |&gt; \n  as_survey_rep(weights = rwgt0,repweights = rwgt1:rwgt45,type = \"JK1\",mse = TRUE,combined.weights = TRUE, scale = (45-1)/45) |&gt; \n  mutate(lng2 = (lect_pv1 + lect_pv2 + lect_pv3 + lect_pv4 + lect_pv5)/5,\n         math2 = (maths_pv1 + maths_pv2 + maths_pv3 + maths_pv4 + maths_pv5)/5)\n\ngrd2_rep |&gt; \n  mutate(niveau = case_when(\n    lng2 &lt;= 399.12 ~ \"Ss_Niveau_1\",\n    lng2 &gt; 399.12 & lng2 &lt;= 469.54 ~ \"Niveau_1\",\n    lng2 &gt; 469.54 & lng2 &lt;= 539.96 ~ \"Niveau_2\",\n    lng2 &gt; 539.96 & lng2 &lt;= 610.38 ~ \"Niveau_3\",\n    lng2 &gt; 610.38 ~ \"Niveau_4\",\n    TRUE ~ NA_character_)) |&gt; \n  group_by(niveau) |&gt; \n  summarise(p = survey_mean())\n#&gt; # A tibble: 5 × 3\n#&gt;   niveau          p   p_se\n#&gt;   &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;\n#&gt; 1 Niveau_1    0.305 0.0161\n#&gt; 2 Niveau_2    0.223 0.0172\n#&gt; 3 Niveau_3    0.122 0.0123\n#&gt; 4 Niveau_4    0.116 0.0167\n#&gt; 5 Ss_Niveau_1 0.234 0.0244\n\ngrd2_rep |&gt; \n  mutate(niveau = case_when(\n    math2 &lt; 400 ~ \"Ss_Niveau_1\",\n    math2 &gt;= 400 & math2 &lt; 489 ~ \"Niveau_1\",\n    math2 &gt;= 489 & math2 &lt; 577 ~ \"Niveau_2\",\n    math2 &gt;= 577 ~ \"Niveau_3\",\n    TRUE ~ NA_character_)) |&gt; \n  group_by(niveau) |&gt; \n  summarise(p = survey_mean())\n#&gt; # A tibble: 4 × 3\n#&gt;   niveau          p   p_se\n#&gt;   &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;\n#&gt; 1 Niveau_1    0.377 0.0169\n#&gt; 2 Niveau_2    0.279 0.0132\n#&gt; 3 Niveau_3    0.190 0.0174\n#&gt; 4 Ss_Niveau_1 0.154 0.0181\n\n\ngrd6_rep &lt;- grd6 |&gt; \n  as_survey_rep(weights = rwgt0,repweights = rwgt1:rwgt90,type = \"JK1\",mse = TRUE,combined.weights = FALSE, scale = (45-1)/45) |&gt; \n  mutate(lng6 = (lect_pv1 + lect_pv2 + lect_pv3 + lect_pv4 + lect_pv5)/5,\n         math6 = (maths_pv1 + maths_pv2 + maths_pv3 + maths_pv4 + maths_pv5)/5)\n\n\ngrd6_rep |&gt; \n  mutate(niveau = case_when(\n    lng6 &lt; 365.01 ~ \"Ss_Niveau_1\",\n    lng6 &gt; 365.01 & lng6 &lt;= 441.69 ~ \"Niveau_1\",\n    lng6 &gt; 441.69 & lng6 &lt;= 518.37 ~ \"Niveau_2\",\n    lng6 &gt; 518.37 & lng6 &lt;= 595.05 ~ \"Niveau_3\",\n    lng6 &gt; 595.05 ~ \"Niveau_4\",\n    TRUE ~ NA_character_)) |&gt; \n  group_by(niveau) |&gt; \n  summarise(p = survey_mean())\n#&gt; # A tibble: 5 × 3\n#&gt;   niveau           p    p_se\n#&gt;   &lt;chr&gt;        &lt;dbl&gt;   &lt;dbl&gt;\n#&gt; 1 Niveau_1    0.306  0.0150 \n#&gt; 2 Niveau_2    0.244  0.0113 \n#&gt; 3 Niveau_3    0.191  0.00952\n#&gt; 4 Niveau_4    0.195  0.0109 \n#&gt; 5 Ss_Niveau_1 0.0648 0.00640\n\n\ngrd6_rep |&gt; \n  mutate(niveau = case_when(\n    math6 &lt; 433 ~ \"Ss_Niveau_1\",\n    math6 &gt;= 433 & math6 &lt; 521 ~ \"Niveau_1\",\n    math6 &gt;= 521 & math6 &lt; 609 ~ \"Niveau_2\",\n    math6 &gt;= 609 ~ \"Niveau_3\",\n    TRUE ~ NA_character_)) |&gt; \n  group_by(niveau) |&gt; \n  summarise(p = survey_mean()) \n#&gt; # A tibble: 4 × 3\n#&gt;   niveau          p   p_se\n#&gt;   &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;\n#&gt; 1 Niveau_1    0.305 0.0124\n#&gt; 2 Niveau_2    0.215 0.0114\n#&gt; 3 Niveau_3    0.155 0.0117\n#&gt; 4 Ss_Niveau_1 0.325 0.0175",
+    "crumbs": [
+      "Analyse de la qualité du système",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Analyse de la qualité du système</span>"
+    ]
+  },
+  {
+    "objectID": "efficacite_interne.html#une-analyse-de-la-performance-en-matière-dalphabétisation",
+    "href": "efficacite_interne.html#une-analyse-de-la-performance-en-matière-dalphabétisation",
+    "title": "3  Efficacité interne du système",
+    "section": "3.4 Une analyse de la performance en matière d’alphabétisation",
+    "text": "3.4 Une analyse de la performance en matière d’alphabétisation\n\n3.4.1 Rappel Méthodologique\n\n\n\n\n\n\n1. Le taux brut de scolarisation\n\n\n\n\\[\nTBS = \\frac{ES}{PAS}\n\\]",
+    "crumbs": [
+      "Analyse de la scolarisation, de l'efficacité interne et des enfants hors du système scolaraire",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Efficacité interne du système</span>"
+    ]
+  },
+  {
+    "objectID": "qualite.html#une-analyse-de-la-performance-en-matière-dalphabétisation",
+    "href": "qualite.html#une-analyse-de-la-performance-en-matière-dalphabétisation",
+    "title": "5  Analyse de la qualité du système",
+    "section": "5.4 Une analyse de la performance en matière d’alphabétisation",
+    "text": "5.4 Une analyse de la performance en matière d’alphabétisation\n\n5.4.1 Rappel Méthodologique\n\n\n\n\n\n\nLe taux d’alphabétisation\n\n\n\n\\[\nTBS = \\frac{ES}{PAS}\n\\]\n\n5.4.2 Implémentation\n\n\n#mn |&gt; \n#  select(HH1, HH2, HL1, MWB14, MWAGEM, MMT6, MMT4, MMT5, mwelevel, mnweight, MMA1, MMA5)",
+    "crumbs": [
+      "Analyse de la qualité du système",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Analyse de la qualité du système</span>"
     ]
   }
 ]

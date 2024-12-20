@@ -1,10 +1,146 @@
 # Efficacité interne du système
 
-In summary, this book has no content whatsoever.
+{{< include _setup.qmd >}}
+
+Le présent chapitre aborde la question de l'efficacité interne du système à travers l'analyse de la question du redoublement et de l'abandon.
+
+
+## Le redoublement
+
+
+### Rappel Méthodologique
+
+:::{.callout-note appearance="simple"}
+
+La question de redoublement est souvent abordé à travers le taux de redoublement et le pourcentage de redoublement. Ce sont deux indicateurs très proches mais qui sont légèrement différents dans leur interprétation et dans leur calcul.
+
+### 1. Le taux de redoublement {.unnumbered}
+
+Le taux de redoublement est la proportion des redoublants dans une classe i à une année
+donnée t par rapport à l’effectif des élèves dans cette même classe i l’année précédente (t-1). 
+
+En désignant NR, l'éffectif des redoublements de la classe i de l'année t, et ET, l'effectif total de la classe i de l'année t-1, le taux de redoublement est calculé par la formule suivante:
+
+$$
+TR = \frac{NR_{i,t}}{ET_{i,t-1}}
+$$
+
+### 2. Le pourcentage de redoublement {.unnumbered}
+
+Le pourcentage de redoublants est la proportion de redoublants dans une classe (ou dans un cycle). 
+
+En désignant NR, l'éffectit des redoublements de la classe i de l'année t, et ET, l'effectif total de la classe i de l'année t, le pourcentage de redoublement est calculé par la formule suivante:
+
+$$
+PR = \frac{NR_{i,t}}{ET_{i,t}}
+$$
+:::
+
+
+
+### Implémentation 
+
+Pour calculer le taux et le pourcentage de redoublement avec les données de l'enquête MICS, la démarche est la suivante:
+
+* On crée une variable qui mesure le redoublement;
+* Cette variable est égale 1 si la personne a redoublé la classe, c'est à dire 
+  + La personne a fréquenté le même niveau l'année précédente et l'année en cours ```ED16A==ED10A``` **ET** 
+  + La personne a fréquenté la même classe l'année précédente et l'année en cours ```ED16B==ED10B``` **ET**
+  + La personne fréquente bien un niveau l'année en cours ```ED16A!=.```.
+  
 
 ```{r}
-1 + 1
+
+hl <- hl |>
+  mutate(
+    red = case_when(
+      (ed16a == ed10a) & (ed16b == ed10b) & !is.na(ed16a) ~ 1,
+      !is.na(ed16a)   ~ 0
+    ),
+    drop = case_when(
+      ed9 != 1 ~ 1,
+      .default = 0
+    )
+  )
+
+
+hl_design <- hl %>% 
+  as_survey_design(weights = hhweight)
+
+
+TR <- hl_design |> 
+  group_by(ed16a,ed16b) |> 
+  summarise(TR = survey_mean(red,na.rm = TRUE)*100)
+
+PR <- hl_design |> 
+  group_by(ed16a,ed16b) |> 
+  summarise(PR = survey_mean(red,na.rm = TRUE)*100)
+
+hl_design |> 
+  group_by(ed16a) |> 
+  summarise(ens1 = survey_mean(red,na.rm = TRUE)*100)
+
+
+
+
+
+
+
+
+
+
 ```
+
+
+
+## Les abandons
+
+
+### Rappel Méthodologique
+
+:::{.callout-note appearance="simple"}
+
+### 1. Le taux brut de scolarisation {.unnumbered}
+
+
+
+$$
+TBS = \frac{ES}{PAS}
+$$
+:::
+
+
+
+```{r}
+
+hl_design |> 
+  group_by(ed16a,ed16b) |> 
+  summarise(survey_mean(drop,na.rm = TRUE)*100)
+```
+
+
+## Le Coefficient d'éfficacité interne
+
+
+
+
+
+### Rappel Méthodologique
+
+:::{.callout-note appearance="simple"}
+
+### Le coefficient d'éfficacité interne
+
+
+
+$$
+TBS = \frac{ES}{PAS}
+$$
+:::
+
+
+
+
 
 
 

@@ -45,11 +45,11 @@ Les bases sont importées avec la fonction ```here ()``` pour spécifier l'empla
 #| warning: false
 #| message: false
 
-hl <- import(here("data/mics/hl.sav")) |> as_tibble() # Importation de la base hl
-wm <- import(here("data/mics/wm.sav")) |> as_tibble() # Importation de la base wm
-mn <- import(here("data/mics/mn.sav")) |> as_tibble() # Importation de la base mn
-fs <- import(here("data/mics/fs.sav")) |> as_tibble() # Importation de la base fs
-ch <- import(here("data/mics/ch.sav")) |> as_tibble() # Importation de la base ch
+hl <- import(here("data/mics/hl.sav")) |> clean_names() |> as_tibble() # Importation de la base hl
+wm <- import(here("data/mics/wm.sav")) |> clean_names() |> as_tibble() # Importation de la base wm
+mn <- import(here("data/mics/mn.sav")) |> clean_names() |> as_tibble() # Importation de la base mn
+fs <- import(here("data/mics/fs.sav")) |> clean_names() |> as_tibble() # Importation de la base fs
+ch <- import(here("data/mics/ch.sav")) |> clean_names() |> as_tibble() # Importation de la base ch
 
 
 ```
@@ -73,9 +73,9 @@ hl <- hl |>
 val_labels(hl$age_school) <- c("Primaire" = 1, "Secondaire 1" = 2,"Secondaire 2" = 3)
 
 
-cross_cases(hl,HL4,age_school)
+cross_cases(hl,hl4,age_school)
 
-cross_cpct(hl,HL4,age_school)
+cross_cpct(hl,hl4,age_school)
 
 ```
 
@@ -98,8 +98,8 @@ taux <- function(numerateur,denominateur){
   
 }
 
-val_labels(hl$HH6) <- c(Urbian = 1, Rural = 2)
-val_labels(hl$HH7) <- c("Maritime" = 1, "Plateaux" = 2,"Centrale" = 3, "Kara" = 4,"Savanes" = 5, "Lomé Commune" = 6, "Golfe Urbain" = 7)
+val_labels(hl$hh6) <- c(Urbian = 1, Rural = 2)
+val_labels(hl$hh7) <- c("Maritime" = 1, "Plateaux" = 2,"Centrale" = 3, "Kara" = 4,"Savanes" = 5, "Lomé Commune" = 6, "Golfe Urbain" = 7)
 val_labels(hl$HL4) <- c(Masculin = 1, Feminin = 2)
 
 val_labels(hl$windex5) <- c("Les plus pauvres" = 1, "Second" = 2, "Moyen" = 3, "Quatrième" = 4,"Les plus riches" = 5)
